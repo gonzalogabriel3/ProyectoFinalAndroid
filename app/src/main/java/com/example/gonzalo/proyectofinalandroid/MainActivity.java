@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    /***COMENTARIO DE EJEMPLO****/
+
     /*Metodo que lanza un activity hacia la clase CoordenadasUsuario*/
     public void irCoordenadasUsuario (View v) {
         Intent i=new Intent(this,CoordenadasDeUsuario.class);
