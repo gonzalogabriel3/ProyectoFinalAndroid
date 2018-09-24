@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Donde esta el cole</string>
+    <!--Strings de activity_main-->
+    <string name="menu_principal">Menu Principal</string>
+    <string name="boton_ir_coordenadasUsuario">Obtener coordenadas de un usuario</string>
+    <!--FIN de Strings de activity_main-->
+
+    <!--Strings de coordenadas_usuario.xml-->
+    <string name="latitudUsuario">latitud de usuario</string>
+    <string name="longitudUsuario">longitud de usuario</string>
+    <string name="btnObtenerCoordenadas">Obtener coordenadas de usuario</string>
+    <string name="btnMenuPrincipal">Ir al Menu Principal</string>
+    <!--FIN de Strings de coordenadas_usuario.xml-->
+
+</resources>
