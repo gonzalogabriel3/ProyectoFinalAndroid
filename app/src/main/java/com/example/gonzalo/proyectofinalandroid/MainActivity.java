@@ -20,4 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Intent i=new Intent(this,CoordenadasDeUsuario.class);
         startActivity(i);
     }
+
+    public void irPerfilUsuario(View v){
+        Intent i=new Intent(this,PerfilUsuario.class);
+        startActivity(i);
+    }
 }
