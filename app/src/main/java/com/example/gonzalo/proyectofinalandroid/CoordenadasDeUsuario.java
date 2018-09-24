@@ -24,7 +24,7 @@ public class CoordenadasDeUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coordenadas_de_usuario);
-        
+
     }
 
     public void finalizar(View view){
