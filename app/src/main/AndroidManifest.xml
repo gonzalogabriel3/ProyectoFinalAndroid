@@ -3,9 +3,9 @@
     package="com.example.gonzalo.proyectofinalandroid">
 
     <!-- Agrego permisos para utilizar GPS -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CoordenadasDeUsuario" />
-        <activity android:name=".PerfilUsuario"></activity>
+        <activity android:name=".PerfilUsuario" />
+        <activity android:name=".activity_conexion"></activity>
     </application>
 
 </manifest>

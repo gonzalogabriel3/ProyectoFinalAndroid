@@ -41,6 +41,13 @@
             android:layout_height="wrap_content"
             android:onClick="irPerfilUsuario"
             android:text="Informacion de perfil" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="irProbarConexion"
+            android:text="Probar Conexion" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -27,4 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(i);
     }
+    public void irProbarConexion (View v) {
+        Intent i=new Intent(this,activity_conexion.class);
+        startActivity(i);
+    }
 }
