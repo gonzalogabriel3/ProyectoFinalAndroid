@@ -23,7 +23,8 @@
         </activity>
         <activity android:name=".CoordenadasDeUsuario" />
         <activity android:name=".PerfilUsuario" />
-        <activity android:name=".activity_conexion"></activity>
+        <activity android:name=".activity_conexion" />
+        <activity android:name=".CrearUsuario"></activity>
     </application>
 
 </manifest>
