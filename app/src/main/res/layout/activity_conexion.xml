@@ -7,14 +7,39 @@
     android:orientation="vertical"
     tools:context=".activity_conexion">
 
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_usuario" />
+
+    <EditText
+        android:id="@+id/et_usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="nombre de usuario"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/buttonRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#414af4"
-        android:text="Click Here To Send HTTP Request To Server And See Response Displayed As Toast"
-        android:textColor="#ffffff"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:text="Registrar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
 </LinearLayout>
