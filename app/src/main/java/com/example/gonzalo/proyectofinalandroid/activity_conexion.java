@@ -25,7 +25,7 @@ public class activity_conexion extends AppCompatActivity {
 
     private RequestQueue mRequestQueue;
     private StringRequest mStringRequest;
-    private String url = "http://dondeestaelcole.ddns.net:8080/logusuario";
+    private String url = "http://f3b5211d.ngrok.io/logusuario";
 
     private EditText et_usuario,et_password;
 
