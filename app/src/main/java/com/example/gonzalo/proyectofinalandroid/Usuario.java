@@ -6,17 +6,25 @@ public class Usuario {
     private String nombre;
     private String correo;
     private String password;
+    private String usuario;
     private float latitud;
     private float longitud;
 
-    public Usuario(String nombre,String correo,String password) {
+    public Usuario(){}
+    
+    public Usuario(String Usuario,String nombre,String correo,String password) {
         this.nombre=nombre;
         this.correo=correo;
         this.password=password;
+        this.usuario=Usuario;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -25,6 +33,14 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getCorreo() {

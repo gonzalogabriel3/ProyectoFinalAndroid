@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void irCrearUsuario (View v) {
-        Intent i=new Intent(this,CrearUsuario.class);
+        Intent i = new Intent(this,CrearUsuario.class);
         startActivity(i);
     }
 }

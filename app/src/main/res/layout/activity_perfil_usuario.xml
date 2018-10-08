@@ -16,16 +16,57 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvNombre"
+            android:id="@+id/tv_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre de usuario" />
+            android:text="Id:"
+            android:textSize="24sp"/>
 
         <TextView
-            android:id="@+id/tvCorreo"
+            android:id="@+id/tv_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Correo electronico:" />
+            android:textSize="24sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usuario:"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre:"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"/>
 
         <Button
             android:id="@+id/button"
