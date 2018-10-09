@@ -4,61 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearUsuario">
+    tools:context=".activity_RegistrarUsuario">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="318dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="236dp"
+        android:layout_height="357dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.101">
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/etNombre"
-            android:layout_width="246dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15sp"
             android:ems="10"
-            android:hint="Nombre Completo"
+            android:hint="Nombre completo"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15sp"
             android:ems="10"
             android:hint="Nombre de usuario"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/etCorreo"
-            android:layout_width="248dp"
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15sp"
             android:ems="10"
-            android:hint="Correo electronico"
+            android:hint="Email"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15sp"
             android:ems="10"
-            android:hint="Contraseña"
+            android:hint="Password"
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnRegistrar"
+            android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="registrarUsuario"
             android:text="Registrarse" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

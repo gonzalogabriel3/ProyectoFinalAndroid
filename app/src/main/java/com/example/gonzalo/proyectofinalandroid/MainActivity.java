@@ -32,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void irCrearUsuario (View v) {
-        Intent i = new Intent(this,CrearUsuario.class);
+    public void irRegistrarUsuario(View v){
+        Intent i=new Intent(this,activity_RegistrarUsuario.class);
         startActivity(i);
     }
+
+
+
 }
