@@ -1,5 +1,6 @@
 package com.example.gonzalo.proyectofinalandroid;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,16 +49,19 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
     }
 
     public void Post(){
+        final Intent intentLogin = new Intent(this , activityLogin.class);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = "http://dondeestaelcole.ddns.net:8080/usuario";
+        String url2="http://1d6c93dd.ngrok.io/usuario";
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url2,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Toast.makeText(getApplicationContext(),"EXTIO: Se ha registrado el usuario " + response,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"EXITO: Te has registrado correctamente",Toast.LENGTH_SHORT).show();
+                        startActivity(intentLogin);
                     }
                 },
                 new Response.ErrorListener()
