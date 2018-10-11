@@ -49,7 +49,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
 
     public void Post(){
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://ad7853e3.ngrok.io/usuario";
+        String url = "http://dondeestaelcole.ddns.net:8080/usuario";
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
@@ -57,7 +57,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Toast.makeText(getApplicationContext(),"EXTIO: Se ha registrado el usuario",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"EXTIO: Se ha registrado el usuario " + response,Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener()
@@ -65,26 +65,15 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                        Toast.makeText(getApplicationContext(),"FALLO: Error al registrar usuario/"+error.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"FALLO: Error al registrar usuario/ "+error.toString(),Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
-            //Añado cabeceras
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                //Agrego token generado por laravel en la cabecera del post
-                params.put("X-CSRF-TOKEN", "aGg4wE0frWMPMrgemruz475obrxHvA0AgSQGjXvf");
-
-
-                return params;
-            }
             //Añado parametros al POST
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  params = new HashMap<String, String>();
+                Map<String, String>  params = new HashMap<>();
                 params.put("nombre", etNombre.getText().toString());
                 params.put("usuario", etUsuario.getText().toString());
                 params.put("email", etEmail.getText().toString());
