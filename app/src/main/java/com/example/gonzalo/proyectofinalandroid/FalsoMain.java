@@ -13,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 public class FalsoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Usuario usuario = new Usuario();
+    WebView wb_inicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,21 @@ public class FalsoMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        wb_inicio = (WebView)findViewById(R.id.wb_inicio);
+
+        WebSettings webSettings = wb_inicio.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        wb_inicio.loadUrl("file:///android_asset/prueba.html");
+
+
+
+
+
+
+
 
         Toast.makeText(getApplicationContext(),"Bienvenido : " + usuario.getUsuario() ,Toast.LENGTH_SHORT).show();
 
