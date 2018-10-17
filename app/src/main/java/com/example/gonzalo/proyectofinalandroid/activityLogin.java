@@ -67,10 +67,14 @@ public class activityLogin extends AppCompatActivity {
                             String nombre = usuario.getString("nombre");
                             String user = usuario.getString("usuario");
                             String email = usuario.getString("email");
+                            String latitud=usuario.getString("latitud");
+                            String longitud=usuario.getString("longitud");
 
                             intentMain.putExtra("nombre",nombre);
                             intentMain.putExtra("usuario",user);
                             intentMain.putExtra("email",email);
+                            intentMain.putExtra("latitud",latitud);
+                            intentMain.putExtra("longitud",longitud);
                             intentMain.putExtra("id",id);
 
                             startActivity(intentMain);

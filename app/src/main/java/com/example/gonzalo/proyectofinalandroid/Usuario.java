@@ -7,8 +7,8 @@ public class Usuario {
     private String correo;
     private String password;
     private String usuario;
-    private float latitud;
-    private float longitud;
+    private double latitud;
+    private double longitud;
 
     public Usuario(){}
     
@@ -59,7 +59,7 @@ public class Usuario {
         this.password = password;
     }
 
-    public float getLatitud() {
+    public double getLatitud() {
         return latitud;
     }
 
@@ -67,7 +67,7 @@ public class Usuario {
         this.latitud = latitud;
     }
 
-    public float getLongitud() {
+    public double getLongitud() {
         return longitud;
     }
 

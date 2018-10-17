@@ -31,11 +31,19 @@ public class FalsoMain extends AppCompatActivity
         String nombre = getIntent().getStringExtra("nombre");
         String user = getIntent().getStringExtra("usuario");
         String email = getIntent().getStringExtra("email");
+        String latitud=getIntent().getStringExtra("latitud");
+        String longitud=getIntent().getStringExtra("longitud");
         int id = getIntent().getIntExtra("id", 0);
+
+        //Casteo longitud y latitud
+        double latitudUsuario=Double.parseDouble(latitud);
+        double longitudUsuario=Double.parseDouble(longitud);
 
         usuario.setNombre(nombre);
         usuario.setUsuario(user);
         usuario.setCorreo(email);
+        usuario.setLatitud((float) latitudUsuario);
+        usuario.setLongitud((float) longitudUsuario);
         usuario.setId(id);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -137,10 +145,19 @@ public class FalsoMain extends AppCompatActivity
         return true;
     }
 
-    /*METODOS PARA INTERACCION CON EL MAPA*/
-    public void mostrarPosicion(){
+    /*---------METODOS PARA INTERACCION CON EL MAPA--------------*/
 
-        wb_inicio.loadUrl("javascript:mostrarPosicion()");
+    public void mostrarPosicion(){
+        /*Metodo que obtiene la latitud y longitud ya guardados en la base de datos,es decir que previamente
+        dichos datos tendran que haber sido guardados*/
+        //Obtengo latitud del usuario
+        double latitud=usuario.getLatitud();
+        //Obtengo longitud del usuario
+        double longitud=usuario.getLongitud();
+
+        //Llamo a la funcion de javascript tambien llamada 'mostrarPosicion' y le paso 2 parametros(latitud,y longitud)
+        wb_inicio.loadUrl("javascript:mostrarPosicion("+latitud+","+longitud+")");
+
     }
 
 }

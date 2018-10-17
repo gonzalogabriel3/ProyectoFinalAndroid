@@ -26,15 +26,16 @@
 			id: 'mapbox.streets'
 		}).addTo(mymap);
 
-		//mostrarPosicion();
 
 		// zoom the map to the polyline
 		mymap.fitBounds(polyline.getBounds());
 
 		/***FUNCIONES***/
-		function mostrarPosicion(){
-			var marker = L.marker([-43.3081713,-65.0521686]).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
+		function mostrarPosicion(latitud,longitud){
+			var coordenadas_usuario=[latitud,longitud];
+			var marker = L.marker(coordenadas_usuario).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
 		}
+
 </script>
 </body>
 </html>
