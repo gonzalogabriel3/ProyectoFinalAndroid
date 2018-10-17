@@ -54,7 +54,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
         String url = "http://dondeestaelcole.ddns.net:8080/usuario";
         String url2="http://1d6c93dd.ngrok.io/usuario";
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url2,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override

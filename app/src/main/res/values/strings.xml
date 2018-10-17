@@ -10,6 +10,13 @@
     <string name="longitudUsuario">longitud de usuario</string>
     <string name="btnObtenerCoordenadas">Obtener coordenadas de usuario</string>
     <string name="btnMenuPrincipal">Ir al Menu Principal</string>
+    <string name="title_activity_falso_main">Donde esta el Cole</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Donde Esta El Cole</string>
+    <string name="nav_header_subtitle">dondeestaelcole@hotmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
     <!--FIN de Strings de coordenadas_usuario.xml-->
 
 </resources>

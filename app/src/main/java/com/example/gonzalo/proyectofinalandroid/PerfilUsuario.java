@@ -15,26 +15,19 @@ public class PerfilUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_perfil_usuario);
 
         String nombre = getIntent().getStringExtra("nombre");
-        String user = getIntent().getStringExtra("user");
+        String user = getIntent().getStringExtra("usuario");
         String email = getIntent().getStringExtra("email");
         int id = getIntent().getIntExtra("id", 0);
-
-
-        Usuario usuario = new Usuario();
-        usuario.setNombre(nombre);
-        usuario.setUsuario(user);
-        usuario.setCorreo(email);
-        usuario.setId(id);
 
         tv_id = (TextView) findViewById(R.id.tv_id);
         tv_usuario = (TextView) findViewById(R.id.tv_usuario);
         tv_nombre = (TextView) findViewById(R.id.tv_nombre);
         tv_email = (TextView) findViewById(R.id.tv_email);
 
-        tv_id.setText(String.valueOf(usuario.getId()));
-        tv_usuario.setText(usuario.getUsuario());
-        tv_nombre.setText(usuario.getNombre());
-        tv_email.setText(usuario.getCorreo());
+        tv_id.setText(String.valueOf(id));
+        tv_usuario.setText(user);
+        tv_nombre.setText(nombre);
+        tv_email.setText(email);
     }
 
     public void finalizar(View view){

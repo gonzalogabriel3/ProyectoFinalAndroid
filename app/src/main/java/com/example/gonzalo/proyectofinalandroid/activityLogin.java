@@ -23,7 +23,7 @@ public class activityLogin extends AppCompatActivity {
 
     private EditText etUsuario,etPassword;
     private Button btnRequest;
-    private String url = "http://1d6c93dd.ngrok.io/logusuario";
+    private String url = "http://dondeestaelcole.ddns.net:8080/logusuario";
     private RequestQueue mRequestQueue;
     private JsonObjectRequest Request;
 
@@ -47,7 +47,7 @@ public class activityLogin extends AppCompatActivity {
     }
 
     public void inicioSesion(){
-        final Intent intentMain = new Intent(this , MainActivity.class);
+        final Intent intentMain = new Intent(this , FalsoMain.class);
         String urla = url + "/" + etUsuario.getText().toString() + "/" + etPassword.getText().toString();
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
@@ -67,6 +67,11 @@ public class activityLogin extends AppCompatActivity {
                             String nombre = usuario.getString("nombre");
                             String user = usuario.getString("usuario");
                             String email = usuario.getString("email");
+
+                            intentMain.putExtra("nombre",nombre);
+                            intentMain.putExtra("usuario",user);
+                            intentMain.putExtra("email",email);
+                            intentMain.putExtra("id",id);
 
                             startActivity(intentMain);
 

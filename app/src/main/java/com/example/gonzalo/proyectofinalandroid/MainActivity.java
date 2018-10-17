@@ -8,10 +8,24 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Usuario usuario = new Usuario();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String nombre = getIntent().getStringExtra("nombre");
+        String user = getIntent().getStringExtra("usuario");
+        String email = getIntent().getStringExtra("email");
+        int id = getIntent().getIntExtra("id", 0);
+
+        usuario.setNombre(nombre);
+        usuario.setUsuario(user);
+        usuario.setCorreo(email);
+        usuario.setId(id);
+
+
 
         Toast.makeText(getApplicationContext(),"Bienvenido/a",Toast.LENGTH_SHORT).show();
 
@@ -27,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void irPerfilUsuario(View v){
         Intent i=new Intent(this,PerfilUsuario.class);
+        i.putExtra("nombre",usuario.getNombre());
+        i.putExtra("usuario",usuario.getUsuario());
+        i.putExtra("email",usuario.getCorreo());
+        i.putExtra("id",usuario.getId());
 
         startActivity(i);
     }

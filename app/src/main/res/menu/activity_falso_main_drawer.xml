@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Datos de Perfil Completo" />
+        <item
+            android:id="@+id/nav_colectivo"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Buscar Colectivo" />
+
+        <item
+            android:id="@+id/nav_recorrido"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Buscar un recorrido" />
+        <item
+            android:id="@+id/nav_paradas_cercanas"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Buscar Paradas Cercanas" />
+        <item
+            android:id="@+id/nav_puntos_de_recarga"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Buscar Puntos de Recarga" />
+        <item
+            android:id="@+id/nav_horarios"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Mostrar Horarios" />
+        <item
+            android:id="@+id/nav_comentarios"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Dejar Comentarios acerca de un Colectivo" />
+    </group>
+
+    <item android:title="Sugerencias">
+        <menu>
+            <item
+                android:id="@+id/nav_sugerencias"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Enviar Sugerencias" />
+        </menu>
+    </item>
+
+</menu>
