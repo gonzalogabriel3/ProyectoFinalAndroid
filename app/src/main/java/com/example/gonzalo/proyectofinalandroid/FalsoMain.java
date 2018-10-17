@@ -112,7 +112,7 @@ public class FalsoMain extends AppCompatActivity
             Intent i=new Intent(this,activity_conexion.class);
             startActivity(i);
         } else if (id == R.id.nav_paradas_cercanas) {
-
+            mostrarPosicion();
         } else if (id == R.id.nav_puntos_de_recarga) {
 
         } else if (id == R.id.nav_horarios) {
@@ -136,4 +136,11 @@ public class FalsoMain extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    /*METODOS PARA INTERACCION CON EL MAPA*/
+    public void mostrarPosicion(){
+
+        wb_inicio.loadUrl("javascript:mostrarPosicion()");
+    }
+
 }

@@ -26,12 +26,15 @@
 			id: 'mapbox.streets'
 		}).addTo(mymap);
 
-		var marker = L.marker([-43.3081713,-65.0521686]).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
-
+		//mostrarPosicion();
 
 		// zoom the map to the polyline
 		mymap.fitBounds(polyline.getBounds());
 
-	</script>
+		/***FUNCIONES***/
+		function mostrarPosicion(){
+			var marker = L.marker([-43.3081713,-65.0521686]).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
+		}
+</script>
 </body>
 </html>
