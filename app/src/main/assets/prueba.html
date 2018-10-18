@@ -34,6 +34,7 @@
 		function mostrarPosicion(latitud,longitud){
 			var coordenadas_usuario=[latitud,longitud];
 			var marker = L.marker(coordenadas_usuario).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
+			mymap.setView(coordenadas_usuario,16);
 		}
 
 </script>

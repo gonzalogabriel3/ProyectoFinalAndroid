@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +17,21 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FalsoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,6 +138,7 @@ public class FalsoMain extends AppCompatActivity
         } else if (id == R.id.nav_paradas_cercanas) {
             mostrarPosicion();
         } else if (id == R.id.nav_puntos_de_recarga) {
+            guardarPosicionDeUsuario(usuario.getId());
 
         } else if (id == R.id.nav_horarios) {
 
@@ -145,18 +162,60 @@ public class FalsoMain extends AppCompatActivity
         return true;
     }
 
-    /*---------METODOS PARA INTERACCION CON EL MAPA--------------*/
+    //metodo que manda las coordenadas al servidor para ser guradadas
+    public void guardarPosicionDeUsuario(int id){
+
+        double latitud=-43.30406;
+        double longitud=-65.055908;
+
+
+        String url = "http://18b26002.ngrok.io/posicionUsuario/"+id+"/"+latitud+"/"+longitud;
+
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //String Request initialized
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonarray = response.getJSONArray("message");
+
+                            JSONObject usuario = jsonarray.getJSONObject(0);
+
+                            Toast.makeText(getApplicationContext(),"EXITO: Coordenadas guardadas", Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudo guardar coordenadas", Toast.LENGTH_LONG).show();//display the response on screen
+            }
+        });
+
+        mRequestQueue.add(Request);
+    }
+
+
+    /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
 
     public void mostrarPosicion(){
         /*Metodo que obtiene la latitud y longitud ya guardados en la base de datos,es decir que previamente
         dichos datos tendran que haber sido guardados*/
-        //Obtengo latitud del usuario
+
         double latitud=usuario.getLatitud();
-        //Obtengo longitud del usuario
+
         double longitud=usuario.getLongitud();
 
         //Llamo a la funcion de javascript tambien llamada 'mostrarPosicion' y le paso 2 parametros(latitud,y longitud)
         wb_inicio.loadUrl("javascript:mostrarPosicion("+latitud+","+longitud+")");
+
 
     }
 
