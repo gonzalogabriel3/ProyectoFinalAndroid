@@ -25,7 +25,7 @@ public class activityLogin extends AppCompatActivity {
 
     private EditText etUsuario,etPassword;
     private Button btnRequest;
-    private String url = "http://18b26002.ngrok.io/logusuario";
+    private String url = "http://b449c634.ngrok.io/logusuario";
     private RequestQueue mRequestQueue;
     private JsonObjectRequest Request;
 

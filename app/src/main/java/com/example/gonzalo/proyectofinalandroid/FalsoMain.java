@@ -169,37 +169,32 @@ public class FalsoMain extends AppCompatActivity
         double longitud=-65.055908;
 
 
-        String url = "http://18b26002.ngrok.io/posicionUsuario/"+id+"/"+latitud+"/"+longitud;
+        String url = "http://b449c634.ngrok.io/posicionUsuario/"+id+"/"+latitud+"/"+longitud;
 
         //RequestQueue initialized
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
-        //String Request initialized
-        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
-                new Response.Listener<JSONObject>() {
-                    // Takes the response from the JSON request
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>()
+                {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonarray = response.getJSONArray("message");
-
-                            JSONObject usuario = jsonarray.getJSONObject(0);
-
-                            Toast.makeText(getApplicationContext(),"EXITO: Coordenadas guardadas", Toast.LENGTH_LONG).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        // display response
+                        Log.d("Response", response.toString());
+                        Toast.makeText(getApplicationContext(),"EXITO:Se han guardado las coordenadas"+response.toString(),Toast.LENGTH_SHORT).show();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"FALLO:no se guardaron las coordenadas\n"+error.toString(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo guardar coordenadas", Toast.LENGTH_LONG).show();//display the response on screen
-            }
-        });
-
-        mRequestQueue.add(Request);
+        // add it to the RequestQueue
+        mRequestQueue.add(getRequest);
     }
 
 
