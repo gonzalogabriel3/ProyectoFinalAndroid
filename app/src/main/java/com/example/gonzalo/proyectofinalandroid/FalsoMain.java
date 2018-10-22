@@ -163,39 +163,50 @@ public class FalsoMain extends AppCompatActivity
     }
 
     //metodo que manda las coordenadas al servidor para ser guradadas
-    public void guardarPosicionDeUsuario(int id){
+    public void guardarPosicionDeUsuario(final int id){
 
-        double latitud=-43.30406;
-        double longitud=-65.055908;
+        final double latitud=-43.30430;
+        final double longitud=-65.04948;
 
 
-        String url = "http://b449c634.ngrok.io/posicionUsuario/"+id+"/"+latitud+"/"+longitud;
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = "http://ddc25220.ngrok.io/posicionUsuario";
 
-        //RequestQueue initialized
-        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
                 {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        // display response
-                        Log.d("Response", response.toString());
-                        Toast.makeText(getApplicationContext(),"EXITO:Se han guardado las coordenadas"+response.toString(),Toast.LENGTH_SHORT).show();
+                    public void onResponse(String response) {
+                        // response
+                        Toast.makeText(getApplicationContext(),"EXITO: se guradaron las coordenadas",Toast.LENGTH_SHORT).show();
+
                     }
                 },
                 new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"FALLO:no se guardaron las coordenadas\n"+error.toString(),Toast.LENGTH_SHORT).show();
+                        // error
+                        Toast.makeText(getApplicationContext(),"FALLO:"+error.toString(),Toast.LENGTH_SHORT).show();
                     }
                 }
-        );
+        ) {
+            //Añado parametros al POST
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                params.put("id", String.valueOf(id));
+                params.put("latitud", String.valueOf(latitud));
+                params.put("longitud", String.valueOf(longitud));
 
-        // add it to the RequestQueue
-        mRequestQueue.add(getRequest);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
     }
+
 
 
     /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
