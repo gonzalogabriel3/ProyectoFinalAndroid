@@ -1,6 +1,7 @@
 package com.example.gonzalo.proyectofinalandroid;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +40,8 @@ public class FalsoMain extends AppCompatActivity
 
     private Usuario usuario = new Usuario();
     WebView wb_inicio;
+    private double latitudGPS,longitudGPS;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,7 @@ public class FalsoMain extends AppCompatActivity
         String longitud=getIntent().getStringExtra("longitud");
         int id = getIntent().getIntExtra("id", 0);
 
-        //Casteo longitud y latitud
+        //Casteo longitud y latitud del usuario
         double latitudUsuario=Double.parseDouble(latitud);
         double longitudUsuario=Double.parseDouble(longitud);
 
@@ -82,7 +86,6 @@ public class FalsoMain extends AppCompatActivity
         webSettings.setJavaScriptEnabled(true);
 
         wb_inicio.loadUrl("file:///android_asset/prueba.html");
-
 
 
 
@@ -162,50 +165,56 @@ public class FalsoMain extends AppCompatActivity
         return true;
     }
 
-    //metodo que manda las coordenadas al servidor para ser guradadas
-    public void guardarPosicionDeUsuario(final int id){
+    //Metodo que manda las coordenadas al servidor para ser guradadas
+    public void guardarPosicionDeUsuario(final int id) {
 
-        final double latitud=-43.30430;
-        final double longitud=-65.04948;
+        GPSTracker gt=new GPSTracker(getApplicationContext());
+
+        //Llamo al metodo getLocation para obtener la localizacion actual
+        Location localizacion = gt.getLocation();
+        if (localizacion == null) {
+            Toast.makeText(getApplicationContext(), "No se pudo obtener ubicacion-Asegurese de tener el GPS activado", Toast.LENGTH_LONG).show();
+        } else {
+            latitudGPS = localizacion.getLatitude();
+            longitudGPS = localizacion.getLongitude();
 
 
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://ddc25220.ngrok.io/posicionUsuario";
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = "http://09c6c2ff.ngrok.io/posicionUsuario";
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Toast.makeText(getApplicationContext(),"EXITO: se guradaron las coordenadas",Toast.LENGTH_SHORT).show();
+            StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // response
+                            Toast.makeText(getApplicationContext(), "EXITO: se guradaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
 
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // error
+                            Toast.makeText(getApplicationContext(), "FALLO:" + error.toString(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Toast.makeText(getApplicationContext(),"FALLO:"+error.toString(),Toast.LENGTH_SHORT).show();
-                    }
+            ) {
+                //Añado parametros al POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("id", String.valueOf(id));
+                    params.put("latitud", String.valueOf(latitudGPS));
+                    params.put("longitud", String.valueOf(longitudGPS));
+
+                    return params;
                 }
-        ) {
-            //Añado parametros al POST
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<>();
-                params.put("id", String.valueOf(id));
-                params.put("latitud", String.valueOf(latitud));
-                params.put("longitud", String.valueOf(longitud));
+            };
+            queue.add(postRequest);
 
-                return params;
-            }
-        };
-        queue.add(postRequest);
-
+        }
     }
+
 
 
 

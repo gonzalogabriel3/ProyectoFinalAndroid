@@ -59,7 +59,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Toast.makeText(getApplicationContext(),"EXITO: Te has registrado correctamente",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"EXITO: Te has registrado correctamente",Toast.LENGTH_LONG).show();
                         startActivity(intentLogin);
                     }
                 },
@@ -68,7 +68,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                        Toast.makeText(getApplicationContext(),"FALLO: Error al registrar usuario/ "+error.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"FALLO: Error al registrar usuario/ "+error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }
         ) {
