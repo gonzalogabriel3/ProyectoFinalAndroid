@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Long.valueOf;
+
 public class FalsoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -144,7 +146,7 @@ public class FalsoMain extends AppCompatActivity
             guardarPosicionDeUsuario(usuario.getId());
 
         } else if (id == R.id.nav_horarios) {
-
+            cargarCoordenadasDeUsuario(usuario.getId());
         } else if (id == R.id.nav_comentarios) {
 
         } else if (id == R.id.nav_sugerencias) {
@@ -188,7 +190,8 @@ public class FalsoMain extends AppCompatActivity
                         public void onResponse(String response) {
                             // response
                             Toast.makeText(getApplicationContext(), "EXITO: se guradaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
-
+                            //Seteo las nuevas coordenadas en el usuario
+                            cargarCoordenadasDeUsuario(usuario.getId());
                         }
                     },
                     new Response.ErrorListener() {
@@ -213,6 +216,53 @@ public class FalsoMain extends AppCompatActivity
             queue.add(postRequest);
 
         }
+    }
+
+    //Metodo que carga los datos traidos de la base de datos al usuario
+    public void cargarCoordenadasDeUsuario(int id){
+
+        //Invoco al metodo "show" del servidor(usuarioController)
+        String url="http://09c6c2ff.ngrok.io/usuario/"+id;
+
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //String Request initialized
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonarray = response.getJSONArray("usuario");
+
+                            JSONObject datos = jsonarray.getJSONObject(0);
+
+                            //Unicamente seteo la latitud y longitud,debido a que los demas datos ya estan cargados
+                            String latitud=datos.getString("latitud");
+                            String longitud=datos.getString("longitud");
+
+
+                            usuario.setLatitud(Float.parseFloat(latitud));
+                            usuario.setLongitud(Float.parseFloat(longitud));
+
+
+                            Toast.makeText(getApplicationContext(),"SE CARGARON CORRECTAMENTE LAS COORDENADAS\n"+response.toString(), Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudo cargar coordenadas\n"+error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        mRequestQueue.add(Request);
+
     }
 
 
