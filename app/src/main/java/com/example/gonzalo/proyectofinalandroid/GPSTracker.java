@@ -1,5 +1,8 @@
 package com.example.gonzalo.proyectofinalandroid;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -35,6 +38,7 @@ public class GPSTracker implements LocationListener {
             //Mediante locationManager obtengo si el GPS esta activado o no
             boolean GPSActivado = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             if (GPSActivado){
+
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000,10,this);
                 /*El metodo "getLastKnowLocation"  de locationManager devuelve una ubicación que indica los datos de la última corrección de ubicación conocida obtenida
                 del proveedor determinado.
@@ -68,4 +72,6 @@ public class GPSTracker implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
     }
+
+
 }

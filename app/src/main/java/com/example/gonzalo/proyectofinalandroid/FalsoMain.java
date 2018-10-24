@@ -1,8 +1,14 @@
 package com.example.gonzalo.proyectofinalandroid;
 
+import android.location.LocationManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -43,6 +49,7 @@ public class FalsoMain extends AppCompatActivity
     private Usuario usuario = new Usuario();
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
+    LocationManager locationManager;
 
 
     @Override
@@ -80,6 +87,15 @@ public class FalsoMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        /****Mejora****/
+        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            AlertNoGps();
+        }
+        /********/
 
 
         wb_inicio = (WebView)findViewById(R.id.wb_inicio);
@@ -166,6 +182,31 @@ public class FalsoMain extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    private void AlertNoGps() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to delete this entry?");
+
+        builder.setPositiveButton("Yes, please", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //perform any action
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                Toast.makeText(getApplicationContext(), "Yes clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //perform any action
+                Toast.makeText(getApplicationContext(), "No clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //creating alert dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     //Metodo que manda las coordenadas al servidor para ser guradadas
     public void guardarPosicionDeUsuario(final int id) {
@@ -182,14 +223,14 @@ public class FalsoMain extends AppCompatActivity
 
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-            String url = "http://09c6c2ff.ngrok.io/posicionUsuario";
+            String url = "http://dondeestaelcole.ddns.net:8080/posicionUsuario";
 
             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             // response
-                            Toast.makeText(getApplicationContext(), "EXITO: se guradaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "EXITO: se guardaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
                             //Seteo las nuevas coordenadas en el usuario
                             cargarCoordenadasDeUsuario(usuario.getId());
                         }
@@ -222,7 +263,7 @@ public class FalsoMain extends AppCompatActivity
     public void cargarCoordenadasDeUsuario(int id){
 
         //Invoco al metodo "show" del servidor(usuarioController)
-        String url="http://09c6c2ff.ngrok.io/usuario/"+id;
+        String url="http://dondeestaelcole.ddns.net:8080/usuario/"+id;
 
         //RequestQueue initialized
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);

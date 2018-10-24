@@ -25,7 +25,7 @@ public class activityLogin extends AppCompatActivity {
 
     private EditText etUsuario,etPassword;
     private Button btnRequest;
-    private String url = "http://09c6c2ff.ngrok.io/logusuario";
+    private String url = "http://dondeestaelcole.ddns.net:8080/logusuario";
     private RequestQueue mRequestQueue;
     private JsonObjectRequest Request;
 
@@ -90,7 +90,7 @@ public class activityLogin extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo iniciar sesion, el usuario o la contraseña son incorrectos\n"+error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: no se pudo iniciar sesion, el usuario o la contraseña son incorrectos\n", Toast.LENGTH_LONG).show();
             }
         });
 
