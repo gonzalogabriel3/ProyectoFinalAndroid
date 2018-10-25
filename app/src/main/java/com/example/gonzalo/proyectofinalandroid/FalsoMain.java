@@ -89,7 +89,7 @@ public class FalsoMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCA TION_SERVICE);
 
         /****Mejora****/
         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -184,22 +184,13 @@ public class FalsoMain extends AppCompatActivity
     }
     private void AlertNoGps() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to delete this entry?");
+        builder.setMessage("Habilite la Ubicacion para poder usar la aplicación, de lo contrario la aplicacion funcionara de forma incorrecta");
 
-        builder.setPositiveButton("Yes, please", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //perform any action
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                Toast.makeText(getApplicationContext(), "Yes clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //perform any action
-                Toast.makeText(getApplicationContext(), "No clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
