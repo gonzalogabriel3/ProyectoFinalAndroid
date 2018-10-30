@@ -25,7 +25,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
 
     EditText etNombre,etUsuario,etEmail,etPassword;
     Button btn;
-    String URL="http://ebb392dc.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

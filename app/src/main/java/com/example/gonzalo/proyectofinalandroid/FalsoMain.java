@@ -50,7 +50,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://ebb392dc.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080";
 
 
     @Override
@@ -71,8 +71,8 @@ public class FalsoMain extends AppCompatActivity
             //Casteo longitud y latitud del usuario
             double latitudUsuario = Double.parseDouble(latitud);
             double longitudUsuario = Double.parseDouble(longitud);
-            usuario.setLatitud((float) latitudUsuario);
-            usuario.setLongitud((float) longitudUsuario);
+            usuario.setLatitud(latitudUsuario);
+            usuario.setLongitud(longitudUsuario);
 
         }
         usuario.setNombre(nombre);
@@ -110,14 +110,9 @@ public class FalsoMain extends AppCompatActivity
 
         wb_inicio.loadUrl("file:///android_asset/prueba.html");
 
-
-
-
-
-
-
         Toast.makeText(getApplicationContext(),"Bienvenido : " + usuario.getUsuario() ,Toast.LENGTH_SHORT).show();
 
+        guardarPosicionDeUsuario(usuario.getId());
     }
 
     @Override
@@ -162,12 +157,12 @@ public class FalsoMain extends AppCompatActivity
             Intent i=new Intent(this,activity_conexion.class);
             startActivity(i);
         } else if (id == R.id.nav_paradas_cercanas) {
-            mostrarPosicion();
+            //vacio
         } else if (id == R.id.nav_puntos_de_recarga) {
-            guardarPosicionDeUsuario(usuario.getId());
+
 
         } else if (id == R.id.nav_horarios) {
-            cargarCoordenadasDeUsuario(usuario.getId());
+            //vacio
         } else if (id == R.id.nav_comentarios) {
 
         } else if (id == R.id.nav_sugerencias) {
@@ -228,7 +223,7 @@ public class FalsoMain extends AppCompatActivity
                             // response
                             Toast.makeText(getApplicationContext(), "EXITO: se guardaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
                             //Seteo las nuevas coordenadas en el usuario
-                            cargarCoordenadasDeUsuario(usuario.getId());
+                            mostrarPosicion(latitudGPS,longitudGPS);
                         }
                     },
                     new Response.ErrorListener() {
@@ -255,65 +250,14 @@ public class FalsoMain extends AppCompatActivity
         }
     }
 
-    //Metodo que carga los datos traidos de la base de datos al usuario
-    public void cargarCoordenadasDeUsuario(int id){
-
-        //Invoco al metodo "show" del servidor(usuarioController)
-        String url=URL+"/usuario/"+id;
-
-        //RequestQueue initialized
-        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-
-        //String Request initialized
-        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
-                new Response.Listener<JSONObject>() {
-                    // Takes the response from the JSON request
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonarray = response.getJSONArray("usuario");
-
-                            JSONObject datos = jsonarray.getJSONObject(0);
-
-                            //Unicamente seteo la latitud y longitud,debido a que los demas datos ya estan cargados
-                            String latitud=datos.getString("latitud");
-                            String longitud=datos.getString("longitud");
-
-
-                            usuario.setLatitud(Float.parseFloat(latitud));
-                            usuario.setLongitud(Float.parseFloat(longitud));
-
-
-                            Toast.makeText(getApplicationContext(),"SE CARGARON CORRECTAMENTE LAS COORDENADAS\n"+response.toString(), Toast.LENGTH_LONG).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(getApplicationContext(),"Error: no se pudo cargar coordenadas\n"+error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        mRequestQueue.add(Request);
-
-    }
-
-
-
-
     /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
 
-    public void mostrarPosicion(){
+    public void mostrarPosicion(double latitud, double longitud){
         /*Metodo que obtiene la latitud y longitud ya guardados en la base de datos,es decir que previamente
         dichos datos tendran que haber sido guardados*/
+        usuario.setLatitud(latitud);
+        usuario.setLongitud(longitud);
 
-        double latitud=usuario.getLatitud();
-
-        double longitud=usuario.getLongitud();
 
         //Llamo a la funcion de javascript tambien llamada 'mostrarPosicion' y le paso 2 parametros(latitud,y longitud)
         wb_inicio.loadUrl("javascript:mostrarPosicion("+latitud+","+longitud+")");

@@ -39,7 +39,7 @@ public class GPSTracker implements LocationListener {
             boolean GPSActivado = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             if (GPSActivado){
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000,10,this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,10,this);
                 /*El metodo "getLastKnowLocation"  de locationManager devuelve una ubicación que indica los datos de la última corrección de ubicación conocida obtenida
                 del proveedor determinado.
                 */
