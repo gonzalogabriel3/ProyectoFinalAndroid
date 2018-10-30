@@ -50,6 +50,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
+    String URL="http://ebb392dc.ngrok.io";
 
 
     @Override
@@ -218,7 +219,7 @@ public class FalsoMain extends AppCompatActivity
 
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-            String url = "http://dondeestaelcole.ddns.net:8080/posicionUsuario";
+            String url = URL+"/posicionUsuario";
 
             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -258,7 +259,7 @@ public class FalsoMain extends AppCompatActivity
     public void cargarCoordenadasDeUsuario(int id){
 
         //Invoco al metodo "show" del servidor(usuarioController)
-        String url="http://dondeestaelcole.ddns.net:8080/usuario/"+id;
+        String url=URL+"/usuario/"+id;
 
         //RequestQueue initialized
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
