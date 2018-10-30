@@ -11,59 +11,77 @@
             android:id="@+id/tv_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4sp"
             android:text="Id:"
-            android:textSize="24sp"/>
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            tools:textColor="@android:color/holo_blue_dark" />
 
         <TextView
             android:id="@+id/tv_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"/>
+            android:paddingLeft="4sp"
+            android:textSize="24sp" />
 
 
         <TextView
             android:id="@+id/tv_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Usuario:"
-            android:textSize="24sp"/>
+            android:layout_marginTop="4sp"
+            android:paddingLeft="4sp"
+            android:text="Nombre de usuario:"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            tools:textColor="@color/colorAccent" />
 
         <TextView
             android:id="@+id/tv_usuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"/>
+            android:paddingLeft="4sp"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tv_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre:"
-            android:textSize="24sp"/>
+            android:layout_marginTop="4sp"
+            android:paddingLeft="4sp"
+            android:text="Nombre completo:"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tv_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"/>
+            android:paddingLeft="4sp"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tv_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4sp"
+            android:paddingLeft="4sp"
             android:text="Email:"
-            android:textSize="24sp"/>
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"/>
+            android:paddingLeft="4sp"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50sp"
             android:onClick="finalizar"
             android:text="Volver" />
 </LinearLayout>

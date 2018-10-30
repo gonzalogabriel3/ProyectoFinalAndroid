@@ -50,7 +50,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://dondeestaelcole.ddns.net:8080";
+    String URL="http://fe044945.ngrok.io";
 
 
     @Override
@@ -92,6 +92,7 @@ public class FalsoMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -151,19 +152,18 @@ public class FalsoMain extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_colectivo) {
-            Intent i=new Intent(this,CoordenadasDeUsuario.class);
-            startActivity(i);
+            //vacio
         } else if (id == R.id.nav_recorrido) {
-            Intent i=new Intent(this,activity_conexion.class);
-            startActivity(i);
+            //vacio
         } else if (id == R.id.nav_paradas_cercanas) {
             //vacio
         } else if (id == R.id.nav_puntos_de_recarga) {
-
+            //vacio
 
         } else if (id == R.id.nav_horarios) {
             //vacio
-        } else if (id == R.id.nav_comentarios) {
+        } else if (id == R.id.nav_posicion) {
+            guardarPosicionDeUsuario(usuario.getId());
 
         } else if (id == R.id.nav_sugerencias) {
 
@@ -222,7 +222,7 @@ public class FalsoMain extends AppCompatActivity
                         public void onResponse(String response) {
                             // response
                             Toast.makeText(getApplicationContext(), "EXITO: se guardaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
-                            //Seteo las nuevas coordenadas en el usuario
+
                             mostrarPosicion(latitudGPS,longitudGPS);
                         }
                     },
@@ -253,8 +253,7 @@ public class FalsoMain extends AppCompatActivity
     /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
 
     public void mostrarPosicion(double latitud, double longitud){
-        /*Metodo que obtiene la latitud y longitud ya guardados en la base de datos,es decir que previamente
-        dichos datos tendran que haber sido guardados*/
+
         usuario.setLatitud(latitud);
         usuario.setLongitud(longitud);
 

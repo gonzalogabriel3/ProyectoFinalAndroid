@@ -6,33 +6,33 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_perfil"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_usuario"
             android:title="Datos de Perfil Completo" />
         <item
             android:id="@+id/nav_colectivo"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_colectivo"
             android:title="Buscar Colectivo" />
 
         <item
             android:id="@+id/nav_recorrido"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_recorrido"
             android:title="Buscar un recorrido" />
         <item
             android:id="@+id/nav_paradas_cercanas"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_parada"
             android:title="Buscar Paradas Cercanas" />
         <item
             android:id="@+id/nav_puntos_de_recarga"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_punto_recarga"
             android:title="Buscar Puntos de Recarga" />
         <item
             android:id="@+id/nav_horarios"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_horarios"
             android:title="Mostrar Horarios" />
         <item
-            android:id="@+id/nav_comentarios"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Dejar Comentarios acerca de un Colectivo" />
+            android:id="@+id/nav_posicion"
+            android:icon="@drawable/ic_posicion"
+            android:title="Mostrar mi posicion" />
     </group>
 
     <item android:title="Sugerencias">
