@@ -60,19 +60,23 @@ public class FalsoMain extends AppCompatActivity
         String nombre = getIntent().getStringExtra("nombre");
         String user = getIntent().getStringExtra("usuario");
         String email = getIntent().getStringExtra("email");
-        String latitud=getIntent().getStringExtra("latitud");
-        String longitud=getIntent().getStringExtra("longitud");
+
+
         int id = getIntent().getIntExtra("id", 0);
 
-        //Casteo longitud y latitud del usuario
-        double latitudUsuario=Double.parseDouble(latitud);
-        double longitudUsuario=Double.parseDouble(longitud);
+        if(getIntent().hasExtra("latitud") || getIntent().hasExtra("longitud")) {
+            String latitud = getIntent().getStringExtra("latitud");
+            String longitud = getIntent().getStringExtra("longitud");
+            //Casteo longitud y latitud del usuario
+            double latitudUsuario = Double.parseDouble(latitud);
+            double longitudUsuario = Double.parseDouble(longitud);
+            usuario.setLatitud((float) latitudUsuario);
+            usuario.setLongitud((float) longitudUsuario);
 
+        }
         usuario.setNombre(nombre);
         usuario.setUsuario(user);
         usuario.setCorreo(email);
-        usuario.setLatitud((float) latitudUsuario);
-        usuario.setLongitud((float) longitudUsuario);
         usuario.setId(id);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,7 +93,7 @@ public class FalsoMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        locationManager = (LocationManager) getSystemService(LOCA TION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         /****Mejora****/
         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
