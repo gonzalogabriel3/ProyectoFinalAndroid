@@ -50,7 +50,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://fe044945.ngrok.io";
+    String URL="http://20b196be.ngrok.io";
 
 
     @Override
@@ -158,7 +158,7 @@ public class FalsoMain extends AppCompatActivity
         } else if (id == R.id.nav_paradas_cercanas) {
             //vacio
         } else if (id == R.id.nav_puntos_de_recarga) {
-            //vacio
+            mostrarPuntos();
 
         } else if (id == R.id.nav_horarios) {
             //vacio
@@ -262,6 +262,42 @@ public class FalsoMain extends AppCompatActivity
         wb_inicio.loadUrl("javascript:mostrarPosicion("+latitud+","+longitud+")");
 
 
+    }
+
+    public void mostrarPuntos(){
+
+        String url=URL+"/punto";
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //String Request initialized
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        //Transformo en String el JSON  que me devuelve el servidor,añado comillas simples para darle formato
+                        String jsonString=response.toString();
+
+                        //Reemplazo caracteres especiales ('\"') para que quede una cadena limpia
+                        String jsonString2=jsonString.replace("\\"+'"',"");
+
+                        //Toast.makeText(getApplicationContext(),jsonString2,Toast.LENGTH_LONG).show();
+
+                        //LLamo a la funcion de javascript y le paso como parametro la cadena
+                        wb_inicio.loadUrl("javascript:mostrarPuntos('"+jsonString2+"');");
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar los puntos de recarga\n"+error.toString(), Toast.LENGTH_LONG).show();
+            }
+    });
+        mRequestQueue.add(Request);
     }
 
 }

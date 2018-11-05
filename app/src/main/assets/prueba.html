@@ -52,6 +52,28 @@
 			}
 		}
 
+		//Funcion que recibe un STRING en formaro de json
+		function mostrarPuntos(jsonString){
+
+			//Lo parseo a JSON
+			var miJson=JSON.parse(jsonString);
+
+			//Obtengo el array "puntos" con todos los objetos
+			var puntos=miJson['puntos'];
+
+			//Creo el icono para dibujar el punto de recarga en el mapa
+            var iconoPuntoRecarga = L.icon({
+                iconUrl: 'sube.png',
+                iconSize: [45, 45] // size of the icon
+            });
+
+			//Recorro el array
+			for(var i=0;i<puntos.length;i++){
+				//Voy dibujando los puntos
+				L.marker([puntos[i].latitud,puntos[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+puntos[i].nombre+'</b>').openPopup();
+			}
+		}
+
 </script>
 </body>
 </html>
