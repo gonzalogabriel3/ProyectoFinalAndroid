@@ -9,9 +9,12 @@
     tools:context=".FalsoMain"
     tools:showIn="@layout/app_bar_falso_main">
 
-
     <WebView
         android:id="@+id/wb_inicio"
-        android:layout_width="362dp"
-        android:layout_height="match_parent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></WebView>
+
+
+
+
 </LinearLayout>

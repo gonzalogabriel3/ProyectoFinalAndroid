@@ -16,6 +16,9 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class GPSTracker implements LocationListener {
     Context context;
+    private LocationManager locationManager;
+    private boolean GPSActivado;
+    private Location localizacion;
 
     //En el constructor se pasa un contexto,en este caso sera el MainActivity porque es ahi donde se va a crear una instancia de esta clase
     public GPSTracker(Context context) {
@@ -33,19 +36,21 @@ public class GPSTracker implements LocationListener {
         try {
             /*Creo un nuevo objeto de la clase LocationManager,esta clase proporciona acceso a los servicios de localización del sistema.
             Estos servicios permiten a las aplicaciones obtener actualizaciones periódicas de la ubicación geográfica del dispositivo*/
-            LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+            this.locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
             //Mediante locationManager obtengo si el GPS esta activado o no
-            boolean GPSActivado = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            this.GPSActivado = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             if (GPSActivado){
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,10,this);
+                this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,10,this);
                 /*El metodo "getLastKnowLocation"  de locationManager devuelve una ubicación que indica los datos de la última corrección de ubicación conocida obtenida
                 del proveedor determinado.
                 */
                 /*Creo un nuevo objeto de tipo Location,"Location" es una clase de datos que representa una ubicación geográfica.
                 Un location puede constar de latitud, longitud, marca de tiempo y otra información, como rumbo, altitud y velocidad.*/
-                Location localizacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                this.localizacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                //Retorno esa localizacion
                 return localizacion;
             }else{
                 Log.e("sec","errpr");
@@ -58,19 +63,23 @@ public class GPSTracker implements LocationListener {
 
     //Al ser una interfaz "LocationListener",deben definirse estos metodos,pero no hace falta implementarlos
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location newlocation) {
+        this.localizacion = newlocation;
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+
     }
 
     @Override
     public void onProviderEnabled(String provider) {
+
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+
     }
 
 

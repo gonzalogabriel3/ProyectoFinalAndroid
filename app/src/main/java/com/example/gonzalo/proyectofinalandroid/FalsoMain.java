@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,9 +38,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static java.lang.Long.valueOf;
 
@@ -50,7 +55,13 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://b777937b.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080";
+
+    Timer timer;
+    TimerTask timerTask;
+
+    //Se crea un Handler que contedra el llamado a la funcion de ubicacion
+    final Handler handler = new Handler();
 
 
     @Override
@@ -182,9 +193,59 @@ public class FalsoMain extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //onResume va a iniciar el timer cuando la aplicacion este en primer plano
+        startTimer();
+
+    }
+
+    //Funcion que crea settea el tiempo del Timer y inicia la funcion de ubicacion del usuario
+    public void startTimer() {
+        //Setteo un nuevo Timer
+        timer = new Timer();
+
+        //Inicializo la funcion que va a funcionar para ubicar al usuario
+        initializeTimerTask();
+
+        //Indico el tiempo de inicio despues que abro el activity y indico cada cuanto tiempo se va a llamar a la funcion
+        timer.schedule(timerTask, 5000, 45000);
+    }
+
+    /*
+    Funcion que cancela el funcionamiento del TimerTask
+    public void stoptimertask(View v) {
+        //stop the timer, if it's not already null
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+*/
+    //Funcion que se va a ejecutar cada vez que Se Termine el tiempo del Timer
+    public void initializeTimerTask() {
+
+        timerTask = new TimerTask() {
+            public void run() {
+
+                //Creo un Handler que va a llamar a la funcion que ubica y guarda la posicion del usuario
+                handler.post(new Runnable() {
+                    public void run() {
+
+                        guardarPosicionDeUsuario(usuario.getId());
+
+                    }
+                });
+            }
+        };
+    }
+
     private void AlertNoGps() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Habilite la Ubicacion para poder usar la aplicación, de lo contrario la aplicacion funcionara de forma incorrecta");
+        builder.setMessage("Habilite la Ubicacion para poder usar la aplicación, de lo contrario la aplicacion no funcionara de forma correcta");
 
         builder.setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
             @Override
@@ -207,7 +268,7 @@ public class FalsoMain extends AppCompatActivity
         //Llamo al metodo getLocation para obtener la localizacion actual
         Location localizacion = gt.getLocation();
         if (localizacion == null) {
-            Toast.makeText(getApplicationContext(), "No se pudo obtener ubicacion-Asegurese de tener el GPS activado", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No se pudo obtener ubicacion-Asegurese de tener el GPS activado, o espere unos segundos", Toast.LENGTH_LONG).show();
         } else {
             latitudGPS = localizacion.getLatitude();
             longitudGPS = localizacion.getLongitude();
@@ -220,8 +281,6 @@ public class FalsoMain extends AppCompatActivity
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // response
-                            Toast.makeText(getApplicationContext(), "EXITO: se guardaron las coordenadas" + response.toString(), Toast.LENGTH_LONG).show();
 
                             mostrarPosicion(latitudGPS,longitudGPS);
                         }
@@ -230,7 +289,7 @@ public class FalsoMain extends AppCompatActivity
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Toast.makeText(getApplicationContext(), "FALLO:" + error.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "FALLO: no se pudo ubicar al usuario, se intentara de nuevo en varios segundos", Toast.LENGTH_LONG).show();
                         }
                     }
             ) {
@@ -256,7 +315,6 @@ public class FalsoMain extends AppCompatActivity
 
         usuario.setLatitud(latitud);
         usuario.setLongitud(longitud);
-
 
         //Llamo a la funcion de javascript tambien llamada 'mostrarPosicion' y le paso 2 parametros(latitud,y longitud)
         wb_inicio.loadUrl("javascript:mostrarPosicion("+latitud+","+longitud+")");
@@ -294,7 +352,7 @@ public class FalsoMain extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar los puntos de recarga\n"+error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: no se pudieron cargar los puntos de recarga intente nuevamente", Toast.LENGTH_LONG).show();
             }
     });
         mRequestQueue.add(Request);
@@ -320,8 +378,6 @@ public class FalsoMain extends AppCompatActivity
                         //Reemplazo caracteres especiales ('\"') para que quede una cadena limpia
                         String jsonString2=jsonString.replace("\\"+'"',"");
 
-                        Toast.makeText(getApplicationContext(),jsonString2,Toast.LENGTH_LONG).show();
-
                         //LLamo a la funcion de javascript y le paso como parametro la cadena
                         wb_inicio.loadUrl("javascript:mostrarParadas('"+jsonString2+"');");
 
@@ -331,7 +387,7 @@ public class FalsoMain extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas\n"+error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas, intente nuevamente", Toast.LENGTH_LONG).show();
             }
         });
         mRequestQueue.add(Request);
