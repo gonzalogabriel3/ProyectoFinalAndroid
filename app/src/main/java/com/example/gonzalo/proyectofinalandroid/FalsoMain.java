@@ -50,7 +50,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://20b196be.ngrok.io";
+    String URL="http://b777937b.ngrok.io";
 
 
     @Override
@@ -156,7 +156,7 @@ public class FalsoMain extends AppCompatActivity
         } else if (id == R.id.nav_recorrido) {
             //vacio
         } else if (id == R.id.nav_paradas_cercanas) {
-            //vacio
+            mostrarParadasCercanas();
         } else if (id == R.id.nav_puntos_de_recarga) {
             mostrarPuntos();
 
@@ -297,6 +297,43 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar los puntos de recarga\n"+error.toString(), Toast.LENGTH_LONG).show();
             }
     });
+        mRequestQueue.add(Request);
+    }
+
+    public void mostrarParadasCercanas(){
+
+        String url=URL+"/paradasCercanas/"+usuario.getId();
+
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        //String Request initialized
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        //Transformo en String el JSON  que me devuelve el servidor,añado comillas simples para darle formato
+                        String jsonString=response.toString();
+
+                        //Reemplazo caracteres especiales ('\"') para que quede una cadena limpia
+                        String jsonString2=jsonString.replace("\\"+'"',"");
+
+                        Toast.makeText(getApplicationContext(),jsonString2,Toast.LENGTH_LONG).show();
+
+                        //LLamo a la funcion de javascript y le paso como parametro la cadena
+                        wb_inicio.loadUrl("javascript:mostrarParadas('"+jsonString2+"');");
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas\n"+error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
         mRequestQueue.add(Request);
     }
 

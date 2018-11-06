@@ -74,6 +74,28 @@
 			}
 		}
 
+		//Funcion que recibe un STRING en formaro de json
+		function mostrarParadas(jsonString){
+
+			//Lo parseo a JSON
+			var miJson=JSON.parse(jsonString);
+
+			//Obtengo el array "paradas" con todos los objetos
+			var paradas=miJson['paradas'];
+
+			//Creo el icono para dibujar el punto de recarga en el mapa
+            var iconoPuntoRecarga = L.icon({
+                iconUrl: 'parada.png',
+                iconSize: [45, 45] // size of the icon
+            });
+
+			//Recorro el array
+			for(var i=0;i<paradas.length;i++){
+				//Voy dibujando los puntos
+				L.marker([paradas[i].latitud,paradas[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+paradas[i].nombre+'</b>').openPopup();
+			}
+		}
+
 </script>
 </body>
 </html>
