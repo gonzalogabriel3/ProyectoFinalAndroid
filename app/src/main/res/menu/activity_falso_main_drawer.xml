@@ -35,13 +35,6 @@
             android:title="Mostrar mi posicion" />
     </group>
 
-    <item android:title="Sugerencias">
-        <menu>
-            <item
-                android:id="@+id/nav_sugerencias"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Enviar Sugerencias" />
-        </menu>
-    </item>
+
 
 </menu>
