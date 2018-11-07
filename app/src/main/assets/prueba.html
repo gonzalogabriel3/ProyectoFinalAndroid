@@ -73,7 +73,7 @@
 			//Recorro el array
 			for(var i=0;i<puntos.length;i++){
 				//Voy dibujando los puntos
-				L.marker([puntos[i].latitud,puntos[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+puntos[i].nombre+'</b>').openPopup();
+				L.marker([puntos[i].latitud,puntos[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+puntos[i].nombre+'</b>');
 			}
 		}
 
@@ -95,10 +95,11 @@
 			//Recorro el array
 			for(var i=0;i<paradas.length;i++){
 				//Voy dibujando los puntos
-				L.marker([paradas[i].latitud,paradas[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+paradas[i].nombre+'</b>').openPopup();
+				L.marker([paradas[i].latitud,paradas[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+paradas[i].nombre+'</b>');
 			}
 		}
 
+		//Funcion que muestra un linestring(recorrido de un colectivo) en el mapa
 		function mostrarRecorrido(jsonString){
 
 			//Lo parseo a JSON
@@ -107,8 +108,12 @@
 			//Obtengo el array "puntos" con todos los objetos
 			var puntos=miJson['puntos'];
 
-			polylineRecorrido = L.polyline(puntos, {color: 'red'}).addTo(mymap);
-
+			if(polylineRecorrido==[]){
+				polylineRecorrido = L.polyline(puntos, {color: 'red'}).addTo(mymap);
+			}else{
+				mymap.removeLayer(polylineRecorrido);
+				polylineRecorrido = L.polyline(puntos, {color: 'red'}).addTo(mymap);
+			}
 		}
 
 </script>
