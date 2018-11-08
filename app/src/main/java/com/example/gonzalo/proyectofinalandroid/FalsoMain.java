@@ -167,17 +167,56 @@ public class FalsoMain extends AppCompatActivity
         if (id == R.id.nav_colectivo) {
             //vacio
         } else if (id == R.id.nav_recorrido) {
-            ArrayList<String> nombresRecorridos = new ArrayList<String>();
-            ArrayList<String> idsRecorridos = new ArrayList<String>();
-            nombresRecorridos.add("Playa ida");
-            idsRecorridos.add("1");
-            nombresRecorridos.add("Playa vuelta");
-            idsRecorridos.add("2");
 
-            Intent intent = new Intent(this, listaRecorridoActivity.class);
-            intent.putExtra("nombresRecorridos", nombresRecorridos);
-            intent.putExtra("idsRecorridos", idsRecorridos);
-            startActivityForResult(intent,1);
+            String url=URL+"/recorrido";
+            //RequestQueue initialized
+            RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+            //String Request initialized
+            JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                    new Response.Listener<JSONObject>() {
+                        // Takes the response from the JSON request
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                ArrayList<String> nombresRecorridos = new ArrayList<String>();
+                                ArrayList<String> idsRecorridos = new ArrayList<String>();
+
+                                JSONArray jsonarray = response.getJSONArray("recorridos");
+
+                                JSONObject usuario = jsonarray.getJSONObject(0);
+
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject object = jsonarray.getJSONObject(i);
+                                    String nombre_recorrido = object.getString("nombre");
+                                    String id_recorrido=object.getString("id");
+                                    nombresRecorridos.add(nombre_recorrido);
+                                    idsRecorridos.add(id_recorrido);
+                                }
+
+                                Intent intent = new Intent(getApplicationContext(), listaRecorridoActivity.class);
+                                intent.putExtra("nombresRecorridos", nombresRecorridos);
+                                intent.putExtra("idsRecorridos", idsRecorridos);
+                                startActivityForResult(intent,1);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Toast.makeText(getApplicationContext(),"Error: no se pueden mostrar los recorridos,intentelo nuevamente", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            mRequestQueue.add(Request);
+
+
+
+
+
             //mostrarRecorrido(1);
 
 

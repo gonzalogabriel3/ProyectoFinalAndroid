@@ -52,7 +52,7 @@ public class listaRecorridoActivity extends AppCompatActivity {
 
             }
         });
-        
+
 
 
     }
