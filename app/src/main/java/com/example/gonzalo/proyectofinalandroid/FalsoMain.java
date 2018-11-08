@@ -56,7 +56,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    public String URL="http://de1ca905.ngrok.io";
+    public String URL="http://dondeestaelcole.ddns.net:8080";
     public static final int recorridoId=0;
 
     Timer timer;

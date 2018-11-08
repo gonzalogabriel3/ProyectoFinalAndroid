@@ -25,7 +25,7 @@ public class activityLogin extends AppCompatActivity {
 
     private EditText etUsuario,etPassword;
     private Button btnRequest;
-    String URL="http://de1ca905.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080";
     private String url = URL+"/logusuario";
     private RequestQueue mRequestQueue;
     private JsonObjectRequest Request;
@@ -51,14 +51,26 @@ public class activityLogin extends AppCompatActivity {
 
     }
 
-    public void inicioSesion(){
+    private void inicioSesion() {
         final Intent intentMain = new Intent(this , FalsoMain.class);
-        String urla = url + "/" + etUsuario.getText().toString() + "/" + etPassword.getText().toString();
+
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
 
+
+        JSONObject usuario = new JSONObject();
+        try
+        {
+            usuario.put("usuario", etUsuario.getText().toString());
+            usuario.put("password", etPassword.getText().toString());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
         //String Request initialized
-        Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, urla, null ,
+        Request = new JsonObjectRequest(com.android.volley.Request.Method.POST, url, usuario ,
                 new Response.Listener<JSONObject>() {
                     // Takes the response from the JSON request
                     @Override
@@ -97,7 +109,7 @@ public class activityLogin extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo iniciar sesion, el usuario o la contraseña son incorrectos,intentelo nuevamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: " + error.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
