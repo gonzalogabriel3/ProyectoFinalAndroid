@@ -29,7 +29,8 @@
         <activity
             android:name=".FalsoMain"
             android:label="@string/title_activity_falso_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".listaRecorridoActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.gonzalo.proyectofinalandroid;
 
+import android.app.Activity;
 import android.location.LocationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,14 +56,14 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://dondeestaelcole.ddns.net:8080";
+    public String URL="http://de1ca905.ngrok.io";
+    public static final int recorridoId=0;
 
     Timer timer;
     TimerTask timerTask;
 
     //Se crea un Handler que contedra el llamado a la funcion de ubicacion
     final Handler handler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class FalsoMain extends AppCompatActivity
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
+    //MENU DE SELECCION
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -165,7 +167,59 @@ public class FalsoMain extends AppCompatActivity
         if (id == R.id.nav_colectivo) {
             //vacio
         } else if (id == R.id.nav_recorrido) {
-            //vacio
+
+            String url=URL+"/recorrido";
+            //RequestQueue initialized
+            RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+            //String Request initialized
+            JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                    new Response.Listener<JSONObject>() {
+                        // Takes the response from the JSON request
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                ArrayList<String> nombresRecorridos = new ArrayList<String>();
+                                ArrayList<String> idsRecorridos = new ArrayList<String>();
+
+                                JSONArray jsonarray = response.getJSONArray("recorridos");
+
+                                JSONObject usuario = jsonarray.getJSONObject(0);
+
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject object = jsonarray.getJSONObject(i);
+                                    String nombre_recorrido = object.getString("nombre");
+                                    String id_recorrido=object.getString("id");
+                                    nombresRecorridos.add(nombre_recorrido);
+                                    idsRecorridos.add(id_recorrido);
+                                }
+
+                                Intent intent = new Intent(getApplicationContext(), listaRecorridoActivity.class);
+                                intent.putExtra("nombresRecorridos", nombresRecorridos);
+                                intent.putExtra("idsRecorridos", idsRecorridos);
+                                startActivityForResult(intent,1);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Toast.makeText(getApplicationContext(),"Error: no se pueden mostrar los recorridos,intentelo nuevamente", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            mRequestQueue.add(Request);
+
+
+
+
+
+            //mostrarRecorrido(1);
+
+
         } else if (id == R.id.nav_paradas_cercanas) {
             mostrarParadasCercanas();
         } else if (id == R.id.nav_puntos_de_recarga) {
@@ -175,8 +229,6 @@ public class FalsoMain extends AppCompatActivity
             //vacio
         } else if (id == R.id.nav_posicion) {
             guardarPosicionDeUsuario(usuario.getId());
-
-        } else if (id == R.id.nav_sugerencias) {
 
         } else if (id == R.id.nav_perfil) {
             Intent i=new Intent(this,PerfilUsuario.class);
@@ -194,6 +246,8 @@ public class FalsoMain extends AppCompatActivity
         return true;
     }
 
+    //FIN MENU DE SELECCION
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -201,6 +255,22 @@ public class FalsoMain extends AppCompatActivity
         //onResume va a iniciar el timer cuando la aplicacion este en primer plano
         startTimer();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String recorridoId=data.getStringExtra("recorridoId");
+                int recorrido_id=Integer.parseInt(recorridoId);
+                //Toast.makeText(getApplicationContext(),"id: "+recorrido_id,Toast.LENGTH_LONG).show();
+                mostrarRecorrido(recorrido_id);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     //Funcion que crea settea el tiempo del Timer y inicia la funcion de ubicacion del usuario
@@ -392,5 +462,41 @@ public class FalsoMain extends AppCompatActivity
         });
         mRequestQueue.add(Request);
     }
+
+    public void mostrarRecorrido(int idRecorrido){
+
+        String url=URL+"/mapa/"+idRecorrido;
+
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        //String Request initialized
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        //Transformo en String el JSON  que me devuelve el servidor,añado comillas simples para darle formato
+                        String jsonString=response.toString();
+
+                        //Reemplazo caracteres especiales ('\"') para que quede una cadena limpia
+                        String jsonString2=jsonString.replace("\\"+'"',"");
+
+                        //LLamo a la funcion de javascript y le paso como parametro la cadena
+                        wb_inicio.loadUrl("javascript:mostrarRecorrido('"+jsonString2+"');");
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar el recorrido, intente nuevamente", Toast.LENGTH_LONG).show();
+            }
+        });
+        mRequestQueue.add(Request);
+    }
+
 
 }

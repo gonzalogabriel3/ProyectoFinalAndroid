@@ -19,6 +19,9 @@
 <script>
         //Array que contiene el icono de un usuario
 		var markerUsuario=[];
+		//Array que contiene el polyline de un recorrido
+		var polylineRecorrido=[];
+
 		var coordenadas_rawson=[-43.2991348,-65.1056655];
 		var mymap = L.map('mapid').setView(coordenadas_rawson,12);
 
@@ -46,7 +49,7 @@
 				markerUsuario = L.marker(coordenadas_usuario,{icon: iconoUsuario}).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
 				mymap.setView(coordenadas_usuario,16);
 			}else{
-				mymap.removeLayer(iconoUsuario);
+				mymap.removeLayer(markerUsuario);
 				markerUsuario = L.marker(coordenadas_usuario,{icon: iconoUsuario}).addTo(mymap).bindPopup('<b>Usted esta aqui</b>').openPopup();
 				mymap.setView(coordenadas_usuario,16);
 			}
@@ -70,7 +73,7 @@
 			//Recorro el array
 			for(var i=0;i<puntos.length;i++){
 				//Voy dibujando los puntos
-				L.marker([puntos[i].latitud,puntos[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+puntos[i].nombre+'</b>').openPopup();
+				L.marker([puntos[i].latitud,puntos[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+puntos[i].nombre+'</b>');
 			}
 		}
 
@@ -92,7 +95,24 @@
 			//Recorro el array
 			for(var i=0;i<paradas.length;i++){
 				//Voy dibujando los puntos
-				L.marker([paradas[i].latitud,paradas[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+paradas[i].nombre+'</b>').openPopup();
+				L.marker([paradas[i].latitud,paradas[i].longitud],{icon: iconoPuntoRecarga}).addTo(mymap).bindPopup('<b>'+paradas[i].nombre+'</b>');
+			}
+		}
+
+		//Funcion que muestra un linestring(recorrido de un colectivo) en el mapa
+		function mostrarRecorrido(jsonString){
+
+			//Lo parseo a JSON
+			var miJson=JSON.parse(jsonString);
+
+			//Obtengo el array "puntos" con todos los objetos
+			var puntos=miJson['puntos'];
+
+			if(polylineRecorrido==[]){
+				polylineRecorrido = L.polyline(puntos, {color: 'red'}).addTo(mymap);
+			}else{
+				mymap.removeLayer(polylineRecorrido);
+				polylineRecorrido = L.polyline(puntos, {color: 'red'}).addTo(mymap);
 			}
 		}
 
