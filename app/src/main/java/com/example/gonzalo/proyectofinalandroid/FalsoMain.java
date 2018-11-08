@@ -1,5 +1,6 @@
 package com.example.gonzalo.proyectofinalandroid;
 
+import android.app.Activity;
 import android.location.LocationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,14 +56,14 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    String URL="http://34a114f5.ngrok.io";
+    public String URL="http://de1ca905.ngrok.io";
+    public static final int recorridoId=0;
 
     Timer timer;
     TimerTask timerTask;
 
     //Se crea un Handler que contedra el llamado a la funcion de ubicacion
     final Handler handler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class FalsoMain extends AppCompatActivity
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
+    //MENU DE SELECCION
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -165,7 +167,20 @@ public class FalsoMain extends AppCompatActivity
         if (id == R.id.nav_colectivo) {
             //vacio
         } else if (id == R.id.nav_recorrido) {
-            mostrarRecorrido(1);
+            ArrayList<String> nombresRecorridos = new ArrayList<String>();
+            ArrayList<String> idsRecorridos = new ArrayList<String>();
+            nombresRecorridos.add("Playa ida");
+            idsRecorridos.add("1");
+            nombresRecorridos.add("Playa vuelta");
+            idsRecorridos.add("2");
+
+            Intent intent = new Intent(this, listaRecorridoActivity.class);
+            intent.putExtra("nombresRecorridos", nombresRecorridos);
+            intent.putExtra("idsRecorridos", idsRecorridos);
+            startActivityForResult(intent,1);
+            //mostrarRecorrido(1);
+
+
         } else if (id == R.id.nav_paradas_cercanas) {
             mostrarParadasCercanas();
         } else if (id == R.id.nav_puntos_de_recarga) {
@@ -192,6 +207,8 @@ public class FalsoMain extends AppCompatActivity
         return true;
     }
 
+    //FIN MENU DE SELECCION
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -199,6 +216,22 @@ public class FalsoMain extends AppCompatActivity
         //onResume va a iniciar el timer cuando la aplicacion este en primer plano
         startTimer();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String recorridoId=data.getStringExtra("recorridoId");
+                int recorrido_id=Integer.parseInt(recorridoId);
+                //Toast.makeText(getApplicationContext(),"id: "+recorrido_id,Toast.LENGTH_LONG).show();
+                mostrarRecorrido(recorrido_id);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     //Funcion que crea settea el tiempo del Timer y inicia la funcion de ubicacion del usuario
@@ -425,5 +458,6 @@ public class FalsoMain extends AppCompatActivity
         });
         mRequestQueue.add(Request);
     }
+
 
 }
