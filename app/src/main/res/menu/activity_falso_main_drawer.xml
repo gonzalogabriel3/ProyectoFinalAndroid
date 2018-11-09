@@ -34,8 +34,12 @@
             android:icon="@drawable/ic_posicion"
             android:title="Mostrar mi posicion" />
         <item
+            android:id="@+id/nav_tarifas"
+            android:icon="@drawable/ic_precio"
+            android:title="Ver tarifas" />
+        <item
             android:id="@+id/nav_cerrar_sesion"
-            android:icon="@drawable/ic_posicion"
+            android:icon="@drawable/ic_salir"
             android:title="Cerrar Sesion" />
     </group>
 

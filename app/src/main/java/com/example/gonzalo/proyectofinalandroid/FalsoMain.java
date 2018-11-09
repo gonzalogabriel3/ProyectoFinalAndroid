@@ -56,7 +56,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    public String URL="http://dondeestaelcole.ddns.net:8080";
+    public String URL="http://dd5cbfad.ngrok.io";
     public static final int recorridoId=0;
 
     Timer timer;
@@ -215,11 +215,6 @@ public class FalsoMain extends AppCompatActivity
 
 
 
-
-
-            //mostrarRecorrido(1);
-
-
         } else if (id == R.id.nav_paradas_cercanas) {
             mostrarParadasCercanas();
         } else if (id == R.id.nav_puntos_de_recarga) {
@@ -227,6 +222,8 @@ public class FalsoMain extends AppCompatActivity
 
         } else if (id == R.id.nav_horarios) {
             //vacio
+        } else if (id == R.id.nav_tarifas) {
+             irTarifas();
         } else if (id == R.id.nav_posicion) {
             guardarPosicionDeUsuario(usuario.getId());
 
@@ -380,6 +377,11 @@ public class FalsoMain extends AppCompatActivity
             queue.add(postRequest);
 
         }
+    }
+
+    public void irTarifas(){
+        Intent i=new Intent(getApplicationContext(), tarifaActivity.class);
+        startActivity(i);
     }
 
     /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
