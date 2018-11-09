@@ -240,6 +240,9 @@ public class FalsoMain extends AppCompatActivity
             startActivity(i);
 
         }
+        else if (id == R.id.nav_cerrar_sesion) {
+            cerrarSesion(usuario.getId());
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -498,5 +501,51 @@ public class FalsoMain extends AppCompatActivity
         mRequestQueue.add(Request);
     }
 
+    private void cerrarSesion(int id) {
+        final Intent intentMain = new Intent(this , activityLogin.class);
+
+        String url=URL+"/logusuarioclose";
+
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+
+        JSONObject usuario = new JSONObject();
+        try
+        {
+            usuario.put("id", id);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        //String Request initialized
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.POST, url, usuario ,
+                new Response.Listener<JSONObject>() {
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+                            if (response.has("message")){
+
+                                Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
+                                startActivity(intentMain);
+
+                            } else {
+
+                                Toast.makeText(getApplicationContext(),"No se pudo cerrar la sesion correctamente intentelo nuevamente",Toast.LENGTH_SHORT).show();
+
+                            }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"No se pudo cerrar la sesion correctamente intentelo nuevamente", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        mRequestQueue.add(Request);
+    }
 
 }
