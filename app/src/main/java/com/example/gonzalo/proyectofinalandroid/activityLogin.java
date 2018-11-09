@@ -25,7 +25,7 @@ public class activityLogin extends AppCompatActivity {
 
     private EditText etUsuario,etPassword;
     private Button btnRequest;
-    String URL="http://dd5cbfad.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080";
     private String url = URL+"/logusuario";
     private RequestQueue mRequestQueue;
     private JsonObjectRequest Request;

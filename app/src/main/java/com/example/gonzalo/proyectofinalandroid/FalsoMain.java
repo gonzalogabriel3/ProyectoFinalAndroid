@@ -56,7 +56,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    public String URL="http://dd5cbfad.ngrok.io";
+    public String URL="http://dondeestaelcole.ddns.net:8080";
     public static final int recorridoId=0;
 
     Timer timer;
@@ -285,16 +285,15 @@ public class FalsoMain extends AppCompatActivity
         timer.schedule(timerTask, 5000, 45000);
     }
 
-    /*
-    Funcion que cancela el funcionamiento del TimerTask
-    public void stoptimertask(View v) {
+    //Funcion que cancela el funcionamiento del TimerTask
+    public void stoptimertask() {
         //stop the timer, if it's not already null
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
     }
-*/
+
     //Funcion que se va a ejecutar cada vez que Se Termine el tiempo del Timer
     public void initializeTimerTask() {
 
@@ -338,7 +337,7 @@ public class FalsoMain extends AppCompatActivity
         //Llamo al metodo getLocation para obtener la localizacion actual
         Location localizacion = gt.getLocation();
         if (localizacion == null) {
-            Toast.makeText(getApplicationContext(), "No se pudo obtener ubicacion-Asegurese de tener el GPS activado, o espere unos segundos", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No se pudo obtener ubicacion-Asegurese de tener el GPS activado, o espere unos segundos", Toast.LENGTH_SHORT).show();
         } else {
             latitudGPS = localizacion.getLatitude();
             longitudGPS = localizacion.getLongitude();
@@ -359,7 +358,7 @@ public class FalsoMain extends AppCompatActivity
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Toast.makeText(getApplicationContext(), "FALLO: no se pudo ubicar al usuario, se intentara de nuevo en varios segundos", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "FALLO: no se pudo ubicar al usuario, se intentara de nuevo en varios segundos", Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {
@@ -427,7 +426,7 @@ public class FalsoMain extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudieron cargar los puntos de recarga intente nuevamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: no se pudieron cargar los puntos de recarga intente nuevamente", Toast.LENGTH_SHORT).show();
             }
     });
         mRequestQueue.add(Request);
@@ -462,7 +461,7 @@ public class FalsoMain extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas, intente nuevamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
         mRequestQueue.add(Request);
@@ -497,7 +496,7 @@ public class FalsoMain extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar el recorrido, intente nuevamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar el recorrido, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
         mRequestQueue.add(Request);
@@ -531,11 +530,12 @@ public class FalsoMain extends AppCompatActivity
                             if (response.has("message")){
 
                                 Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
+                                stoptimertask();
                                 startActivity(intentMain);
 
                             } else {
 
-                                Toast.makeText(getApplicationContext(),"No se pudo cerrar la sesion correctamente intentelo nuevamente",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"No se Pudo cerrar sesion, intentelo nuevamente" + response.toString() ,Toast.LENGTH_SHORT).show();
 
                             }
                     }
@@ -543,7 +543,7 @@ public class FalsoMain extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"No se pudo cerrar la sesion correctamente intentelo nuevamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"No se Pudo cerrar sesion, intentelo nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
 
