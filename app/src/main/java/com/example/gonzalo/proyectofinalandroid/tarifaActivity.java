@@ -28,6 +28,7 @@ public class tarifaActivity extends AppCompatActivity {
     private ListView lv1;
     String[] tarifas;
 
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
