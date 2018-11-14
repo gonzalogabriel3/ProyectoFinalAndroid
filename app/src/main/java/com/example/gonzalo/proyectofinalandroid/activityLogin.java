@@ -109,7 +109,7 @@ public class activityLogin extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(),"Error: " + error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"No se pudo iniciar sesion, intentelo nuevamente", Toast.LENGTH_LONG).show();
             }
         });
 

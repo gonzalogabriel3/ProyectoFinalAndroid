@@ -47,6 +47,7 @@ public class tarifaActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+
                             ArrayList<String> tarifasArrayList = new ArrayList<String>();
 
 

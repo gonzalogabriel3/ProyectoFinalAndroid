@@ -216,18 +216,28 @@ public class FalsoMain extends AppCompatActivity
 
 
         } else if (id == R.id.nav_paradas_cercanas) {
+
             mostrarParadasCercanas();
+
         } else if (id == R.id.nav_puntos_de_recarga) {
+
             mostrarPuntos();
 
         } else if (id == R.id.nav_horarios) {
+
             //vacio
+
         } else if (id == R.id.nav_tarifas) {
-             irTarifas();
+
+            Intent i=new Intent(getApplicationContext(), tarifaActivity.class);
+            startActivity(i);
+
         } else if (id == R.id.nav_posicion) {
+
             guardarPosicionDeUsuario(usuario.getId());
 
         } else if (id == R.id.nav_perfil) {
+
             Intent i=new Intent(this,PerfilUsuario.class);
             i.putExtra("nombre",usuario.getNombre());
             i.putExtra("usuario",usuario.getUsuario());
@@ -238,7 +248,9 @@ public class FalsoMain extends AppCompatActivity
 
         }
         else if (id == R.id.nav_cerrar_sesion) {
+
             cerrarSesion(usuario.getId());
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -374,13 +386,11 @@ public class FalsoMain extends AppCompatActivity
                 }
             };
             queue.add(postRequest);
-
         }
     }
 
     public void irTarifas(){
-        Intent i=new Intent(getApplicationContext(), tarifaActivity.class);
-        startActivity(i);
+
     }
 
     /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
@@ -550,4 +560,118 @@ public class FalsoMain extends AppCompatActivity
         mRequestQueue.add(Request);
     }
 
+    /*
+     * Funcion que obtiene los tramos disponibles desde el servidor y los envia a una funcion que muestra dichos tramos en un AlertDialog
+     */
+    public void obtenerTramos() {
+        String url=URL+"/tramo";
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //Inicializamos un JsonObject Request
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // obtenemos la respuesta del JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            //Obtenemos el arreglo correspondiente a los tramos que viene en la respuesta
+                            JSONArray jsonarray = response.getJSONArray("tramos");
+
+                            //arreglo que contendra los nombre de los tramos
+                            String[] tramosnom = {};
+
+                            //arreglo que contendra los id de los tramos
+                            int[] tramosid = {};
+
+                            for (int i = 0; i < jsonarray.length(); i++) {
+                                // obtenemos el JSONObject del indice i
+                                JSONObject tramo = jsonarray.getJSONObject(i);
+                                //cargamos el id en el arreglo
+                                tramosid[i] = tramo.getInt("id");
+                                //cargamos el nombre en el arreglo
+                                tramosnom[i] = tramo.getString("nombre");
+                            }
+
+                            //enviamos los arreglos para cargarlos en el AlertDialog
+                            mostrarTramos(tramosnom,tramosid);
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),"Error al obtener los tramos del colectivo",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudieron cargar los puntos de recarga intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mRequestQueue.add(Request);
+
+    }
+
+    /*
+     * Funcion que muestra un AlertDialog que tiene los tramos disponibles y a partir de la seleccion de uno llama a la funcion que obtiene
+     * la posicion del colectivo dentro de ese tramo
+     */
+    public void mostrarTramos(final String[] tramosnom,final int[] tramosid){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(FalsoMain.this);
+        mBuilder.setTitle("Elija un tramo:");
+        mBuilder.setSingleChoiceItems(tramosnom, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                obtenerColectivo(tramosid[i]);
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
+
+    //Funcion que recibe el id del tramo y a partir de eso obtiene la posicion del colectivo que esta en ese tramo
+    public void obtenerColectivo(int id){
+        String url=URL+"/posicionColectivo/" + id;
+
+        //inicializamos un RequestQueue
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        //inicializamos un JsonObject Request
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // obtenemos la respuesta del JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsarray = response.getJSONArray("colectivo");
+
+                            JSONObject puntos = jsarray.getJSONObject(0);
+
+                            double latitud = Double.valueOf(puntos.getString("latitud"));
+                            double longitud = Double.valueOf(puntos.getString("longitud"));
+
+                            //Llamo a la funcion de javascript tambien llamada 'mostrarPosicionColectivo' y le paso 2 parametros(latitud,y longitud)
+                            wb_inicio.loadUrl("javascript:mostrarPosicionColectivo("+latitud+","+longitud+")");
+
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),"no se pudo obtener correctamente la posicion del colectivo",Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mRequestQueue.add(Request);
+    }
 }

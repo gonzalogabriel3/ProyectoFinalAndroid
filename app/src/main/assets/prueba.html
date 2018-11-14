@@ -19,6 +19,8 @@
 <script>
         //Array que contiene el icono de un usuario
 		var markerUsuario=[];
+		var markerColectivo=[];
+
 		//Array que contiene el polyline de un recorrido
 		var polylineRecorrido=[];
 
@@ -54,6 +56,26 @@
 				mymap.setView(coordenadas_usuario,16);
 			}
 		}
+		function mostrarPosicionColectivo(latitud,longitud){
+			var coordenadas_colectivo=[latitud,longitud];
+
+			//Creo el icono para dibujar al usuario en el mapa
+            var iconoColectivo = L.icon({
+                iconUrl: 'usuario.png',
+                iconSize: [45, 45] // size of the icon
+            });
+
+            //Si ya hay un icono de usuario en el mapa lo elimino y creo uno nuevo
+			if(markerColectivo==[]){
+				markerColectivo = L.marker(coordenadas_colectivo,{icon: iconoColectivo}).addTo(mymap).bindPopup('<b>El Colectivo esta aqui</b>').openPopup();
+				mymap.setView(coordenadas_colectivo,16);
+			}else{
+				mymap.removeLayer(markerColectivo);
+				markerColectivo = L.marker(coordenadas_colectivo,{icon: iconoColectivo}).addTo(mymap).bindPopup('<b>El Colectivo esta aqui</b>').openPopup();
+				mymap.setView(coordenadas_colectivo,16);
+			}
+		}
+
 
 		//Funcion que recibe un STRING en formaro de json
 		function mostrarPuntos(jsonString){
