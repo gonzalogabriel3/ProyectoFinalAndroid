@@ -219,7 +219,6 @@ public class FalsoMain extends AppCompatActivity
 
             alertDialogRecorridos();
 
-            //mostrarParadasCercanas();
 
         } else if (id == R.id.nav_puntos_de_recarga) {
 
@@ -227,7 +226,7 @@ public class FalsoMain extends AppCompatActivity
 
         } else if (id == R.id.nav_horarios) {
 
-            //vacio
+            mostrarHorarios();
 
         } else if (id == R.id.nav_tarifas) {
 
@@ -391,10 +390,6 @@ public class FalsoMain extends AppCompatActivity
         }
     }
 
-    public void irTarifas(){
-
-    }
-
     /*--------------METODOS PARA INTERACCION CON EL MAPA-------------------*/
 
     public void mostrarPosicion(double latitud, double longitud){
@@ -455,10 +450,6 @@ public class FalsoMain extends AppCompatActivity
                     // obtenemos la respuesta del JSON request
                     @Override
                     public void onResponse(JSONObject response) {
-
-
-
-
 
                         try {
                             //Obtenemos el arreglo correspondiente a los tramos que viene en la respuesta
@@ -738,6 +729,68 @@ public class FalsoMain extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
 
                 Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mRequestQueue.add(Request);
+    }
+
+    public void mostrarHorarios(){
+        String url=URL+"/tramo";
+        final Intent intent = new Intent(getApplicationContext(), activity_horario.class);
+
+        //RequestQueue initialized
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //Inicializamos un JsonObject Request
+        JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+                new Response.Listener<JSONObject>() {
+                    // obtenemos la respuesta del JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            //Obtenemos el arreglo correspondiente a los tramos que viene en la respuesta
+                            JSONArray jsonarray = response.getJSONArray("tramos");
+
+                            //arreglo que contendra los nombre de los tramos
+                            final String[] reconom = new String[jsonarray.length()];
+
+                            //arreglo que contendra los id de los tramos
+                            final int[] recoid = new int[jsonarray.length()];
+
+                            for (int i = 0; i < jsonarray.length(); i++) {
+                                // obtenemos el JSONObject del indice i
+                                JSONObject recorrido = jsonarray.getJSONObject(i);
+                                //cargamos el id en el arreglo
+                                recoid[i] = recorrido.getInt("id");
+                                //cargamos el nombre en el arreglo
+                                reconom[i] = recorrido.getString("nombre");
+                            }
+
+                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(FalsoMain.this);
+                            mBuilder.setTitle("Elija un Tramo:");
+                            mBuilder.setSingleChoiceItems(reconom, -1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    intent.putExtra("recorrido",recoid[i]);
+                                    startActivity(intent);
+                                    dialogInterface.dismiss();
+                                }
+                            });
+
+                            AlertDialog mDialog = mBuilder.create();
+                            mDialog.show();
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),"Error al obtener los recorrido del colectivo",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(),"" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
         mRequestQueue.add(Request);

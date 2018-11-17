@@ -31,7 +31,8 @@
             android:label="@string/title_activity_falso_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".listaRecorridoActivity" />
-        <activity android:name=".tarifaActivity"></activity>
+        <activity android:name=".tarifaActivity" />
+        <activity android:name=".activity_horario"></activity>
     </application>
 
 </manifest>
