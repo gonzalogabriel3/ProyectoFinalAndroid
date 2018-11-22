@@ -56,7 +56,7 @@ public class FalsoMain extends AppCompatActivity
     WebView wb_inicio;
     private double latitudGPS,longitudGPS;
     LocationManager locationManager;
-    public String URL="http://dondeestaelcole.ddns.net:8080";
+    public String URL= "http://ced078f2.ngrok.io";
     public static final int recorridoId=0;
 
     Timer timer;
@@ -168,12 +168,12 @@ public class FalsoMain extends AppCompatActivity
             //vacio
         } else if (id == R.id.nav_recorrido) {
 
-            String url=URL+"/recorrido";
+            String url = URL + "/recorrido";
             //RequestQueue initialized
             RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
             //String Request initialized
-            JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
+            JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         // Takes the response from the JSON request
                         @Override
@@ -189,7 +189,7 @@ public class FalsoMain extends AppCompatActivity
                                 for (int i = 0; i < jsonarray.length(); i++) {
                                     JSONObject object = jsonarray.getJSONObject(i);
                                     String nombre_recorrido = object.getString("nombre");
-                                    String id_recorrido=object.getString("id");
+                                    String id_recorrido = object.getString("id");
                                     nombresRecorridos.add(nombre_recorrido);
                                     idsRecorridos.add(id_recorrido);
                                 }
@@ -197,7 +197,7 @@ public class FalsoMain extends AppCompatActivity
                                 Intent intent = new Intent(getApplicationContext(), listaRecorridoActivity.class);
                                 intent.putExtra("nombresRecorridos", nombresRecorridos);
                                 intent.putExtra("idsRecorridos", idsRecorridos);
-                                startActivityForResult(intent,1);
+                                startActivityForResult(intent, 1);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -207,13 +207,15 @@ public class FalsoMain extends AppCompatActivity
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
-                    Toast.makeText(getApplicationContext(),"Error: no se pueden mostrar los recorridos,intentelo nuevamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error: no se pueden mostrar los recorridos,intentelo nuevamente", Toast.LENGTH_LONG).show();
                 }
             });
 
             mRequestQueue.add(Request);
 
-
+        } else if (id == R.id.confirmar_pasajero) {
+            int idTramo=1;
+            confirmarPasajero(usuario.getId(),idTramo);
 
         } else if (id == R.id.nav_paradas_cercanas) {
 
@@ -795,4 +797,44 @@ public class FalsoMain extends AppCompatActivity
         });
         mRequestQueue.add(Request);
     }
+
+    public void confirmarPasajero(final int idUsuario, final int idTramo){
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = URL+"/pasajero";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Toast.makeText(getApplicationContext(),"EXITO: Estas confirmado como pasajero",Toast.LENGTH_LONG).show();
+
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Toast.makeText(getApplicationContext(),"FALLO: No se pudo confirmarte como pasajero,vuelva a intentarlo"+error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        ) {
+            //Añado parametros al POST
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                params.put("id", String.valueOf(idUsuario));
+                params.put("tramo", String.valueOf(idTramo));
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+    }
+
 }

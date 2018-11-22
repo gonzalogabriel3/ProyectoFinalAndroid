@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class activity_horario extends AppCompatActivity {
-    String URL="http://dondeestaelcole.ddns.net:8080";
+    String URL="http://ced078f2.ngrok.io";
     private ListView lv1;
     String[] horarios;
 

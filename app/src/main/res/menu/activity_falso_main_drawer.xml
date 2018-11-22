@@ -18,6 +18,10 @@
             android:icon="@drawable/ic_recorrido"
             android:title="Buscar un recorrido" />
         <item
+            android:id="@+id/confirmar_pasajero"
+            android:icon="@drawable/ic_pasajero"
+            android:title="Confirmar que soy pasajero" />
+        <item
             android:id="@+id/nav_paradas_cercanas"
             android:icon="@drawable/ic_parada"
             android:title="Buscar Paradas Cercanas" />
