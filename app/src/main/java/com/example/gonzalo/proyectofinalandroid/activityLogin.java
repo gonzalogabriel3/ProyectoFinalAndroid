@@ -25,7 +25,7 @@ public class activityLogin extends AppCompatActivity {
 
     private EditText etUsuario,etPassword;
     private Button btnRequest;
-    String URL="http://ced078f2.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080";
     private String url = URL+"/logusuario";
     private RequestQueue mRequestQueue;
     private JsonObjectRequest Request;
@@ -57,8 +57,8 @@ public class activityLogin extends AppCompatActivity {
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
 
-
         JSONObject usuario = new JSONObject();
+
         try
         {
             usuario.put("usuario", etUsuario.getText().toString());

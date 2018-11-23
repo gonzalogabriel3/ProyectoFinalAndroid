@@ -25,7 +25,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
 
     EditText etNombre,etUsuario,etEmail,etPassword;
     Button btn;
-    String URL="http://ced078f2.ngrok.io";
+    String URL="http://dondeestaelcole.ddns.net:8080/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = URL+"/usuario";
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,null,
                 new Response.Listener<String>()
                 {
                     @Override
