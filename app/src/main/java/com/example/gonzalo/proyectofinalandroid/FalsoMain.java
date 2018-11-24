@@ -60,8 +60,11 @@ public class FalsoMain extends AppCompatActivity
     public String URL= "http://dondeestaelcole.ddns.net:8080";
     public static final int recorridoId=0;
     //RequestQueue initialized
-    Timer timer;
-    TimerTask timerTask;
+    Timer timerUsuario,timerColectivo;
+    TimerTask timerTaskUsuario,timerTaskColectivo;
+    public static int idTramo=0;
+
+    Boolean colectivo=false;
 
     //Se crea un Handler que contedra el llamado a la funcion de ubicacion
     final Handler handler = new Handler();
@@ -167,7 +170,15 @@ public class FalsoMain extends AppCompatActivity
 
         if (id == R.id.nav_colectivo) {
             //vacio
-            obtenerTramos();
+            if(timerColectivo==null){
+
+                obtenerTramos();
+
+            } else {
+
+                stoptimertaskColectivo();
+
+            }
 
         } else if (id == R.id.nav_recorrido) {
 
@@ -269,7 +280,7 @@ public class FalsoMain extends AppCompatActivity
         super.onResume();
 
         //onResume va a iniciar el timer cuando la aplicacion este en primer plano
-        startTimer();
+        startTimerUsuario();
 
     }
 
@@ -290,30 +301,30 @@ public class FalsoMain extends AppCompatActivity
     }
 
     //Funcion que crea settea el tiempo del Timer y inicia la funcion de ubicacion del usuario
-    public void startTimer() {
+    public void startTimerUsuario() {
         //Setteo un nuevo Timer
-        timer = new Timer();
+        timerUsuario = new Timer();
 
         //Inicializo la funcion que va a funcionar para ubicar al usuario
-        initializeTimerTask();
+        initializeTimerTaskUsuario();
 
         //Indico el tiempo de inicio despues que abro el activity y indico cada cuanto tiempo se va a llamar a la funcion
-        timer.schedule(timerTask, 5000, 45000);
+        timerUsuario.schedule(timerTaskUsuario, 5000, 45000);
     }
 
     //Funcion que cancela el funcionamiento del TimerTask
-    public void stoptimertask() {
+    public void stoptimertaskUsuario() {
         //stop the timer, if it's not already null
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
+        if (timerUsuario != null) {
+            timerUsuario.cancel();
+            timerUsuario = null;
         }
     }
 
     //Funcion que se va a ejecutar cada vez que Se Termine el tiempo del Timer
-    public void initializeTimerTask() {
+    public void initializeTimerTaskUsuario() {
 
-        timerTask = new TimerTask() {
+        timerTaskUsuario = new TimerTask() {
             public void run() {
 
                 //Creo un Handler que va a llamar a la funcion que ubica y guarda la posicion del usuario
@@ -322,6 +333,44 @@ public class FalsoMain extends AppCompatActivity
 
                         guardarPosicionDeUsuario(usuario.getId());
 
+                    }
+                });
+            }
+        };
+    }
+
+    //Funcion que crea settea el tiempo del Timer y inicia la funcion de ubicacion del colectivo
+    public void startTimerColectivo() {
+        //Setteo un nuevo Timer
+        timerColectivo = new Timer();
+
+        //Inicializo la funcion que va a funcionar para ubicar al usuario
+        initializeTimerTaskColectivo();
+
+        //Indico el tiempo de inicio despues que abro el activity y indico cada cuanto tiempo se va a llamar a la funcion
+        timerColectivo.schedule(timerTaskColectivo, 5000, 45000);
+    }
+
+    //Funcion que cancela el funcionamiento del TimerTask
+    public void stoptimertaskColectivo() {
+
+        //Se detiene el Timer si es que este no es nulo
+        if (timerColectivo != null) {
+            timerColectivo.cancel();
+            timerColectivo = null;
+        }
+    }
+
+    //Funcion que se va a ejecutar cada vez que Se Termine el tiempo del Timer
+    public void initializeTimerTaskColectivo() {
+
+        timerTaskColectivo = new TimerTask() {
+            public void run() {
+
+                //Creo un Handler que va a llamar a la funcion que ubica y obtiene la posicion del colectivo
+                handler.post(new Runnable() {
+                    public void run() {
+                        obtenerColectivo(idTramo);
                     }
                 });
             }
@@ -586,7 +635,7 @@ public class FalsoMain extends AppCompatActivity
                             if (response.has("message")){
 
                                 Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
-                                stoptimertask();
+                                stoptimertaskUsuario();
                                 startActivity(intentMain);
 
                             } else {
@@ -665,8 +714,8 @@ public class FalsoMain extends AppCompatActivity
         mBuilder.setSingleChoiceItems(tramosnom, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getApplicationContext(),tramosnom[i],Toast.LENGTH_SHORT).show();
-                obtenerColectivo(tramosid[i]);
+                idTramo = tramosid[i];
+                startTimerColectivo();
                 dialogInterface.dismiss();
             }
         });
