@@ -36,11 +36,13 @@ public class tarifaActivity extends AppCompatActivity {
 
         lv1=findViewById(R.id.lv1);
 
+        //URL del servidor
         String url=URL+"/tarifa";
-        //RequestQueue initialized
+
+        //RequestQueue inicializado
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
-        //String Request initialized
+        //String Request inicializado
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
                 new Response.Listener<JSONObject>() {
                     // Takes the response from the JSON request
@@ -79,6 +81,7 @@ public class tarifaActivity extends AppCompatActivity {
             }
         });
 
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
 
 

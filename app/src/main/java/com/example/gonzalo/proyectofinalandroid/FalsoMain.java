@@ -74,11 +74,10 @@ public class FalsoMain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_falso_main);
 
+        //Obtengo los Datos del Usuario que se recibieron
         String nombre = getIntent().getStringExtra("nombre");
         String user = getIntent().getStringExtra("usuario");
         String email = getIntent().getStringExtra("email");
-
-
         int id = getIntent().getIntExtra("id", 0);
 
         if(getIntent().hasExtra("latitud") || getIntent().hasExtra("longitud")) {
@@ -91,11 +90,13 @@ public class FalsoMain extends AppCompatActivity
             usuario.setLongitud(longitudUsuario);
 
         }
+        //Setteo todos los datos del usuario en un objeto del tipo Usuario
         usuario.setNombre(nombre);
         usuario.setUsuario(user);
         usuario.setCorreo(email);
         usuario.setId(id);
 
+        //Se definen y crean todos los datos del menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -111,6 +112,7 @@ public class FalsoMain extends AppCompatActivity
         navigationView.setItemIconTintList(null);
 
 
+        //Averiguo si el usuario tiene habilitada la ubicacion de lo contrario lanzo un AlertDialog pidiendo que lo haga
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         /****Mejora****/
@@ -120,6 +122,7 @@ public class FalsoMain extends AppCompatActivity
         /********/
 
 
+        //Preparo los datos y cargo la vista del mapa
         wb_inicio = (WebView)findViewById(R.id.wb_inicio);
 
         WebSettings webSettings = wb_inicio.getSettings();
@@ -165,11 +168,13 @@ public class FalsoMain extends AppCompatActivity
     //MENU DE SELECCION
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Manejo de los Items del Navigation View
         int id = item.getItemId();
 
+        //Item de Posicion del colectivo
         if (id == R.id.nav_colectivo) {
-            //vacio
+
+            //Si el timer del colectivo es null llamo a la funcion de obtencion de lo contrario se para el timer que lanza la busqueda del mismo
             if(timerColectivo==null){
 
                 obtenerTramos();
@@ -180,14 +185,19 @@ public class FalsoMain extends AppCompatActivity
 
             }
 
+        //Item de obtencion de recorridos
         } else if (id == R.id.nav_recorrido) {
 
+            //URL del servidor
             String url = URL + "/recorrido";
+
+            //Se crea una nueva cola
             RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-            //String Request initialized
+
+            //String Request inicializado
             JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
-                        // Takes the response from the JSON request
+                        // obtenemos la respuesta del JSON request
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
@@ -223,34 +233,41 @@ public class FalsoMain extends AppCompatActivity
                 }
             });
 
+            //Añadimos el request a la cola
             mRequestQueue.add(Request);
 
+         //Item que confirma que el usuario es Pasajero de un Tramo
         } else if (id == R.id.confirmar_pasajero) {
 
             tramoPasajero();
 
+        //Item que busca las paradas cercanas a la posicion de un usuario
         } else if (id == R.id.nav_paradas_cercanas) {
 
             alertDialogRecorridos();
 
-
+        //Item que busca los puntos de recarga cercanos a la posicion de un usuario
         } else if (id == R.id.nav_puntos_de_recarga) {
 
             mostrarPuntos();
 
+        //Item que carga los horarios segun el Tramo Seleccionado
         } else if (id == R.id.nav_horarios) {
 
             mostrarHorarios();
 
+        //Item que carga las tarifas de los Tramos
         } else if (id == R.id.nav_tarifas) {
 
             Intent i=new Intent(getApplicationContext(), tarifaActivity.class);
             startActivity(i);
 
+        //Item que confirma que un usuario finalizo el viaje
         } else if (id == R.id.nav_finaliza_viaje) {
 
             finalizarViaje();
 
+        //Item que muestra los datos de Perfil de un usuario
         } else if (id == R.id.nav_perfil) {
 
             Intent i=new Intent(this,PerfilUsuario.class);
@@ -262,6 +279,8 @@ public class FalsoMain extends AppCompatActivity
             startActivity(i);
 
         }
+
+        //Item que Cierra la Sesion de usuario
         else if (id == R.id.nav_cerrar_sesion) {
 
             cerrarSesion(usuario.getId());
@@ -358,6 +377,7 @@ public class FalsoMain extends AppCompatActivity
         if (timerColectivo != null) {
             timerColectivo.cancel();
             timerColectivo = null;
+            Toast.makeText(getApplicationContext(),"Se detuvo la busqueda del colectivo",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -377,6 +397,7 @@ public class FalsoMain extends AppCompatActivity
         };
     }
 
+    //Funcion que lanza un Alert Dialog que se lanza si el usuario no tiene habilitado el GPS
     private void AlertNoGps() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Habilite la Ubicacion para poder usar la aplicación, de lo contrario la aplicacion no funcionara de forma correcta");
@@ -384,12 +405,12 @@ public class FalsoMain extends AppCompatActivity
         builder.setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //perform any action
+                //accion que se lanza a partir de una seleccion
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
         });
 
-        //creating alert dialog
+        //se crea el alert dialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -397,19 +418,29 @@ public class FalsoMain extends AppCompatActivity
     //Metodo que manda las coordenadas al servidor para ser guradadas
     public void guardarPosicionDeUsuario(final int id) {
 
+        //Creo un Objeto de la Clase GPSTracker
         GPSTracker gt=new GPSTracker(getApplicationContext());
 
         //Llamo al metodo getLocation para obtener la localizacion actual
         Location localizacion = gt.getLocation();
+
+        //Si no se encuentra su posicion se le informa al usuario que encienda el GPS o espere unos segundos, de lo contrario se procede a obtener y guardar su posicion
         if (localizacion == null) {
+
             Toast.makeText(getApplicationContext(), "No se pudo obtener ubicacion-Asegurese de tener el GPS activado, o espere unos segundos", Toast.LENGTH_SHORT).show();
+
         } else {
+
             latitudGPS = localizacion.getLatitude();
             longitudGPS = localizacion.getLongitude();
 
+            //Se crea una nueva cola
             RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+            //URL del servidor
             String url = URL+"/posicionUsuario";
 
+            //String Request inicializado
             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -437,6 +468,8 @@ public class FalsoMain extends AppCompatActivity
                     return params;
                 }
             };
+
+            //Añadimos el request a la cola
             mRequestQueue.add(postRequest);
         }
     }
@@ -453,12 +486,15 @@ public class FalsoMain extends AppCompatActivity
 
 
     }
-
+    //Funcion que muestra todos los Puntos de Recarga registrados en la cuidad
     public void mostrarPuntos(){
 
+        //URL del servidor
         String url=URL+"/punto";
+
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-        //String Request initialized
+
+        //String Request inicializado
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
                 new Response.Listener<JSONObject>() {
                     // Takes the response from the JSON request
@@ -484,12 +520,21 @@ public class FalsoMain extends AppCompatActivity
 
                 Toast.makeText(getApplicationContext(),"Error: no se pudieron cargar los puntos de recarga intente nuevamente", Toast.LENGTH_SHORT).show();
             }
-    });
+        });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
+    /*
+        Funcion que Solicita los recorridos registrados en el servidor y los muestra en un alert,
+        a partir de eso llama a la funcion que obtiene las paradas cercanas a la posicion de ese usuario
+    */
     public void alertDialogRecorridos(){
+
+        //URL del servidor
         String url=URL+"/recorrido";
+
         //RequestQueue initialized
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
@@ -544,13 +589,19 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
     public void mostrarParadasCercanas(int idRecorrido){
 
+        //URL del servidor
         String url=URL+"/paradasCercanas/"+usuario.getId()+"/"+idRecorrido;
+
+        //Se crea una nueva cola
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
         //String Request initialized
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
                 new Response.Listener<JSONObject>() {
@@ -576,17 +627,23 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar las paradas cercanas, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
     public void mostrarRecorrido(int idRecorrido){
 
+        //URL del servidor
         String url=URL+"/mapa/"+idRecorrido;
+
+        //Se crea una nueva cola
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
         //String Request initialized
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
                 new Response.Listener<JSONObject>() {
-                    // Takes the response from the JSON request
+                    // obtenemos la respuesta del JSON request
                     @Override
                     public void onResponse(JSONObject response) {
 
@@ -608,14 +665,20 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"Error: no se pudo mostrar el recorrido, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
     private void cerrarSesion(int id) {
+
+        //Se crea un Intent que llama a la Activity principal
         final Intent intentMain = new Intent(this , activityLogin.class);
 
+        //URL del servidor
         String url=URL+"/logusuarioclose";
 
+        //Creo un Objeto Json que contendra la id del usuario
         JSONObject usuario = new JSONObject();
         try
         {
@@ -625,24 +688,26 @@ public class FalsoMain extends AppCompatActivity
         {
             e.printStackTrace();
         }
+
+        //Creo una nueva cola
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-        //String Request initialized
+
+        //String Request inicializado
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.POST, url, usuario ,
                 new Response.Listener<JSONObject>() {
-                    // Takes the response from the JSON request
+                    // obtenemos la respuesta del JSON request
                     @Override
                     public void onResponse(JSONObject response) {
-                            if (response.has("message")){
 
+                        //Si el response contiene la variable message se lanza el intent
+                        if (response.has("message")){
                                 Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
                                 stoptimertaskUsuario();
                                 startActivity(intentMain);
 
-                            } else {
-
+                        } else {
                                 Toast.makeText(getApplicationContext(),"No se Pudo cerrar sesion, intentelo nuevamente" + response.toString() ,Toast.LENGTH_SHORT).show();
-
-                            }
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -652,6 +717,7 @@ public class FalsoMain extends AppCompatActivity
             }
         });
 
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
@@ -686,6 +752,7 @@ public class FalsoMain extends AppCompatActivity
                                 tramosnom[i] = tramo.getString("nombre");
                             }
 
+                            //funcion que muestra los tramos en un alert
                             mostrarTramos(tramosnom,tramosid);
 
                             } catch (JSONException e){
@@ -727,8 +794,10 @@ public class FalsoMain extends AppCompatActivity
     //Funcion que recibe el id del tramo y a partir de eso obtiene la posicion del colectivo que esta en ese tramo
     public void obtenerColectivo(int id){
 
+        //URL del servidor
         String url=URL+"/posicionColectivo/" + id;
 
+        //Se crea una nueva cola
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
         //inicializamos un JsonObject Request
@@ -767,13 +836,26 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
+    /*
+        Funcion que obtiene los tramos registrados en el servidor y los muestra en un alert,
+        a partir de eso se lanza un main que obtiene los horarios de ese tramo
+    */
     public void mostrarHorarios(){
+
+        //URL del servidor
         String url=URL+"/tramo";
+
+        //Intent que lanza el activity de horarios
         final Intent intent = new Intent(getApplicationContext(), activity_horario.class);
+
+        //Se crea una cola
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
         //Inicializamos un JsonObject Request
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
                 new Response.Listener<JSONObject>() {
@@ -826,12 +908,22 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
+    /* funcion que obtiene los tramos registrados en el servidor, y a partir de la seleccion de uno
+        se procede a llamar a la funcion que confirma que el usuario es pasajero del colectivo de ese tramo
+     */
     public void tramoPasajero(){
+
+        //URL del servidor
         String url=URL+"/tramo";
+
+        //Se crea una nueva cola
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
         //Inicializamos un JsonObject Request
         JsonObjectRequest Request = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null ,
                 new Response.Listener<JSONObject>() {
@@ -882,15 +974,22 @@ public class FalsoMain extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
 
-
+    //Funcion que recibe el id del usuario y el id del tramo y se lo envia al servidor para que registre que ese usuario es pasajero del colectivo de ese tramo
     public void confirmarPasajero(final int idUsuario, final int idTramo){
 
-        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+        //URL del servidor
         String url = URL + "/pasajero";
+
+        //Se crea una nueva cola
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //Objeto Json que contiene los id's
         JSONObject usuario = new JSONObject();
         try
         {
@@ -902,12 +1001,12 @@ public class FalsoMain extends AppCompatActivity
             e.printStackTrace();
         }
 
+        //JsonRequest inicializado
         JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url,usuario,
                 new Response.Listener<JSONObject>()
                 {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         // response
                         if(response.has("message")){
                             Toast.makeText(getApplicationContext(),"EXITO: Estas confirmado como pasajero",Toast.LENGTH_LONG).show();
@@ -927,13 +1026,20 @@ public class FalsoMain extends AppCompatActivity
                 }
         );
 
+        //Añadimos el request a la cola
         mRequestQueue.add(postRequest);
 
     }
+    //Funcion que toma el id del usuario y lo envia al servidor para que confirme que este se bajo del colectivo y por ende finalizo su viaje
     public void finalizarViaje(){
-        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //URL del servidor
         String url = URL + "/finalizarviaje/"+usuario.getId();
 
+        //Se crea una nueva cola
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+
+        //JsonRequest inicializado
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>()
                 {
@@ -959,6 +1065,7 @@ public class FalsoMain extends AppCompatActivity
                 }
         );
 
+        //Añadimos el request a la cola
         mRequestQueue.add(getRequest);
     }
 }

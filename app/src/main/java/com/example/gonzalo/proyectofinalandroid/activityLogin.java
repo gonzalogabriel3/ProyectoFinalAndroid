@@ -52,11 +52,14 @@ public class activityLogin extends AppCompatActivity {
     }
 
     private void inicioSesion() {
+
+        //intent que se lanza en caso de que los datos esten correctos
         final Intent intentMain = new Intent(this , FalsoMain.class);
 
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
 
+        //Json Object que contiene el usuario y la contraseña
         JSONObject usuario = new JSONObject();
 
         try
@@ -113,12 +116,14 @@ public class activityLogin extends AppCompatActivity {
             }
         });
 
+        //Añadimos el request a la cola
         mRequestQueue.add(Request);
     }
 
-
     public void irRegistrarUsuario(View v){
+
         Intent i=new Intent(getApplicationContext(),activity_RegistrarUsuario.class);
         startActivity(i);
+
     }
 }

@@ -50,10 +50,17 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
     }
 
     public void Post(){
+
+        //intent que llama a la pantalla de inicio
         final Intent intentLogin = new Intent(this , activityLogin.class);
+
+        //se crea una nueva cola
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+        //URL del servidor
         String url = URL+"/usuario";
 
+        //StringRequest inicializado
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -86,6 +93,8 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                 return params;
             }
         };
+
+        //añadimos el request a la cola
         queue.add(postRequest);
 
     }

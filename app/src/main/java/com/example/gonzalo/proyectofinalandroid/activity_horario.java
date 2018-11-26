@@ -33,11 +33,11 @@ public class activity_horario extends AppCompatActivity {
 
         int recorrido = getIntent().getIntExtra("recorrido",0);
 
-
-
         lv1=findViewById(R.id.lv1);
 
+        //URL del servidor
         String url=URL+"/horariotramo/"+recorrido;
+
         //RequestQueue initialized
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
@@ -81,6 +81,7 @@ public class activity_horario extends AppCompatActivity {
             }
         });
 
+        //añadimos el request a la cola
         mRequestQueue.add(Request);
 
 
