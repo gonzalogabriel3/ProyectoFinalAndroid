@@ -14,7 +14,7 @@
             android:paddingLeft="4sp"
             android:text="Id:"
             android:textColor="@color/colorAccent"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:textColor="@android:color/holo_blue_dark" />
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4sp"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
 
         <TextView
@@ -33,7 +33,7 @@
             android:paddingLeft="4sp"
             android:text="Nombre de usuario:"
             android:textColor="@color/colorAccent"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:textColor="@color/colorAccent" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4sp"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_2"
@@ -51,14 +51,14 @@
             android:paddingLeft="4sp"
             android:text="Nombre completo:"
             android:textColor="@color/colorAccent"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4sp"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_3"
@@ -68,14 +68,14 @@
             android:paddingLeft="4sp"
             android:text="Email:"
             android:textColor="@color/colorAccent"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4sp"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/button"
