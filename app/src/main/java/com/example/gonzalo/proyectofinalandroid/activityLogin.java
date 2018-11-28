@@ -102,7 +102,7 @@ public class activityLogin extends AppCompatActivity {
                             intentMain.putExtra("id",id);
 
                             startActivity(intentMain);
-
+                            finish();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -124,6 +124,7 @@ public class activityLogin extends AppCompatActivity {
 
         Intent i=new Intent(getApplicationContext(),activity_RegistrarUsuario.class);
         startActivity(i);
+        finish();
 
     }
 }

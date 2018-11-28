@@ -7,13 +7,24 @@
     tools:context=".activity_RegistrarUsuario">
 
     <LinearLayout
-        android:layout_width="236dp"
-        android:layout_height="357dp"
+        android:layout_width="353dp"
+        android:layout_height="534dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/textViewNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Completo:"
+            android:textColor="@android:color/background_dark"
+            tools:textSize="18sp" />
 
         <EditText
             android:id="@+id/etNombre"
@@ -23,6 +34,14 @@
             android:hint="Nombre completo"
             android:inputType="textPersonName" />
 
+        <TextView
+            android:id="@+id/textViewUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de Usuario:"
+            android:textColor="@android:color/background_dark"
+            tools:textSize="18sp" />
+
         <EditText
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
@@ -30,6 +49,14 @@
             android:ems="10"
             android:hint="Nombre de usuario"
             android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:textColor="@android:color/background_dark"
+            tools:textSize="18sp" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -39,18 +66,43 @@
             android:hint="Email"
             android:inputType="textEmailAddress" />
 
+        <TextView
+            android:id="@+id/textViewContraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contraseña:"
+            android:textColor="@android:color/background_dark"
+            tools:textSize="18sp" />
+
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Contraseña"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textViewRepetir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Repetir Contraseña:"
+            android:textColor="@android:color/background_dark"
+            tools:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etRepetir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Repetir Contraseña"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="guardarCambios"
             android:text="Registrarse" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

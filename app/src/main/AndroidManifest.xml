@@ -32,7 +32,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".listaRecorridoActivity" />
         <activity android:name=".tarifaActivity" />
-        <activity android:name=".activity_horario"></activity>
+        <activity android:name=".activity_horario" />
+        <activity android:name=".activity_editar_usuario"></activity>
     </application>
 
 </manifest>

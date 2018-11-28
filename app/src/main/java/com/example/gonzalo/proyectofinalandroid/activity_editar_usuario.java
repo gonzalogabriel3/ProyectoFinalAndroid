@@ -3,52 +3,50 @@ package com.example.gonzalo.proyectofinalandroid;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.net.CookieStore;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class activity_RegistrarUsuario extends AppCompatActivity {
+public class activity_editar_usuario extends AppCompatActivity {
 
     EditText etNombre,etUsuario,etEmail,etPassword,etRepetir;
-    Button btn;
-    String URL="http://dondeestaelcole.ddns.net:8080";
+    int id;
+    public String URL="http://dondeestaelcole.ddns.net:8080";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity__registrar_usuario);
+        setContentView(R.layout.activity_editar_usuario);
 
-        etNombre=findViewById(R.id.etNombre);
-        etUsuario=findViewById(R.id.etUsuario);
-        etEmail=findViewById(R.id.etEmail);
-        etPassword=findViewById(R.id.etPassword);
-        etRepetir=findViewById(R.id.etRepetir);
+        String nombre = getIntent().getStringExtra("nombre");
+        String user = getIntent().getStringExtra("usuario");
+        String email = getIntent().getStringExtra("email");
+        id = getIntent().getIntExtra("id", 0);
 
-        btn=findViewById(R.id.btn);
+        etNombre = (EditText)findViewById(R.id.etNombre);
+        etUsuario = (EditText)findViewById(R.id.etUsuario);
+        etEmail = (EditText)findViewById(R.id.etEmail);
+        etPassword = (EditText)findViewById(R.id.etPassword);
+        etRepetir = (EditText)findViewById(R.id.etRepetir);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View v){
-                                              Post();
-                                          }
-                                      }
-        );
-
+        etNombre.setText(nombre);
+        etUsuario.setText(user);
+        etEmail.setText(email);
     }
+
     public Boolean validarDatos(){
         if(etNombre.getText().toString().isEmpty() && etNombre.getText().toString().length() < 5){
             Toast.makeText(getApplicationContext(),"Campo: Nombre se encuentra vacio o tiene menos de 5 caracteres",Toast.LENGTH_SHORT).show();
@@ -77,44 +75,43 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
 
         return true;
     }
-
-    public void Post(){
+    public void guardarCambios(View view){
+        //intent que llama a la pantalla de inicio
         Boolean valido;
 
         valido = validarDatos();
 
         if(valido == true) {
-            //intent que llama a la pantalla de inicio
-            final Intent intentLogin = new Intent(this, activityLogin.class);
 
             //se crea una nueva cola
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
             //URL del servidor
-            String url = URL + "/usuario";
+            String url = URL + "/usuario/" + id ;
 
             //StringRequest inicializado
-            StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+            StringRequest postRequest = new StringRequest(Request.Method.PATCH, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             // response
-                            Toast.makeText(getApplicationContext(), "EXITO: Te has registrado correctamente", Toast.LENGTH_LONG).show();
-                            startActivity(intentLogin);
+                            Toast.makeText(getApplicationContext(), "EXITO: has actualizado tu datos correctamente,estos datos se visualizaran correctamente la proxima vez que inicies sesion", Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Toast.makeText(getApplicationContext(), "FALLO: Error al registrar usuario/ " + error.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "FALLO: Error al actualizar los datos del usuario ", Toast.LENGTH_LONG).show();
                         }
                     }
-            ) {
+            ){
                 //Añado parametros al POST
                 @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
+                protected Map<String, String> getParams()
+                {
+                    Map<String, String>  params = new HashMap<>();
                     params.put("nombre", etNombre.getText().toString());
                     params.put("usuario", etUsuario.getText().toString());
                     params.put("email", etEmail.getText().toString());
@@ -126,8 +123,10 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
 
             //añadimos el request a la cola
             queue.add(postRequest);
+
         } else {
-            Toast.makeText(getApplicationContext(),"Error en el Formulario",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Errores en el formulario",Toast.LENGTH_SHORT).show();
         }
+
     }
 }

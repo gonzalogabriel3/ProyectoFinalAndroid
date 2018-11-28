@@ -704,6 +704,7 @@ public class FalsoMain extends AppCompatActivity
                                 Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
                                 stoptimertaskUsuario();
                                 startActivity(intentMain);
+                                finish();
 
                         } else {
                                 Toast.makeText(getApplicationContext(),"No se Pudo cerrar sesion, intentelo nuevamente" + response.toString() ,Toast.LENGTH_SHORT).show();
