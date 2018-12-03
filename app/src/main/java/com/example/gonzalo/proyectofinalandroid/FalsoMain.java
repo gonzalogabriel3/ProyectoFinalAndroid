@@ -132,7 +132,6 @@ public class FalsoMain extends AppCompatActivity
 
         Toast.makeText(getApplicationContext(),"Bienvenido : " + usuario.getUsuario() ,Toast.LENGTH_SHORT).show();
 
-        guardarPosicionDeUsuario(usuario.getId());
     }
 
     @Override
@@ -300,6 +299,15 @@ public class FalsoMain extends AppCompatActivity
 
         //onResume va a iniciar el timer cuando la aplicacion este en primer plano
         startTimerUsuario();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+        cerrarSesion(usuario.getId());
 
     }
 
@@ -701,10 +709,11 @@ public class FalsoMain extends AppCompatActivity
 
                         //Si el response contiene la variable message se lanza el intent
                         if (response.has("message")){
-                                Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
-                                stoptimertaskUsuario();
-                                startActivity(intentMain);
-                                finish();
+                            stoptimertaskUsuario();
+                            stoptimertaskColectivo();
+                            Toast.makeText(getApplicationContext(),"Se cerro la sesion correctamente",Toast.LENGTH_SHORT).show();
+                            startActivity(intentMain);
+                            finish();
 
                         } else {
                                 Toast.makeText(getApplicationContext(),"No se Pudo cerrar sesion, intentelo nuevamente" + response.toString() ,Toast.LENGTH_SHORT).show();
