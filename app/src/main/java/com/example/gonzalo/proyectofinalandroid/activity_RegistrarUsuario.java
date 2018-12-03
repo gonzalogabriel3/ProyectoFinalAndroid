@@ -98,16 +98,20 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // response
-                            Toast.makeText(getApplicationContext(), "EXITO: Te has registrado correctamente", Toast.LENGTH_LONG).show();
-                            startActivity(intentLogin);
+                            if(response.contains("error")){
+                                Toast.makeText(getApplicationContext(), "No se pudo registrar, ya que esa direccion de email ya esta en uso", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // response
+                                Toast.makeText(getApplicationContext(), "EXITO: Te has registrado correctamente", Toast.LENGTH_LONG).show();
+                                //startActivity(intentLogin);
+                            }
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Toast.makeText(getApplicationContext(), "FALLO: Error al registrar usuario/ " + error.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "FALLO: Error al registrar usuario, por favor intentelo nuevamente", Toast.LENGTH_LONG).show();
                         }
                     }
             ) {
