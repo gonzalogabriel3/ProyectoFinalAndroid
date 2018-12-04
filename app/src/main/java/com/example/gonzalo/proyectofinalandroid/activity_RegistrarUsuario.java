@@ -103,7 +103,8 @@ public class activity_RegistrarUsuario extends AppCompatActivity {
                             } else {
                                 // response
                                 Toast.makeText(getApplicationContext(), "EXITO: Te has registrado correctamente", Toast.LENGTH_LONG).show();
-                                //startActivity(intentLogin);
+                                startActivity(intentLogin);
+                                finish();
                             }
                         }
                     },

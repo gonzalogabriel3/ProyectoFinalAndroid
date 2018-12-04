@@ -336,7 +336,7 @@ public class FalsoMain extends AppCompatActivity
         initializeTimerTaskUsuario();
 
         //Indico el tiempo de inicio despues que abro el activity y indico cada cuanto tiempo se va a llamar a la funcion
-        timerUsuario.schedule(timerTaskUsuario, 5000, 45000);
+        timerUsuario.schedule(timerTaskUsuario, 5000, 20000);
     }
 
     //Funcion que cancela el funcionamiento del TimerTask
@@ -375,7 +375,7 @@ public class FalsoMain extends AppCompatActivity
         initializeTimerTaskColectivo();
 
         //Indico el tiempo de inicio despues que abro el activity y indico cada cuanto tiempo se va a llamar a la funcion
-        timerColectivo.schedule(timerTaskColectivo, 5000, 45000);
+        timerColectivo.schedule(timerTaskColectivo, 0, 30000);
     }
 
     //Funcion que cancela el funcionamiento del TimerTask
